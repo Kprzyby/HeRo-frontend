@@ -90,12 +90,32 @@ function editRecruitment(editRecruitmentInfo){
         }
     });
 }
+function endRecruitment(id){
+    return axiosInstance({
+        url:`End/${id}`,
+        method:'get',
+        params:{
+            recruitmentId:id
+        }
+    });
+}
+function deleteRecruitment(id){
+    return axiosInstance({
+        url:`Delete/${id}`,
+        method:'get',
+        params:{
+            recruitmentId:id
+        }
+    });
+}
 
 const recruitmentService={
     getRecruitment,
     getRecruitments,
     createRecruitment,
-    editRecruitment
+    editRecruitment,
+    endRecruitment,
+    deleteRecruitment
 }
 
 export default recruitmentService;

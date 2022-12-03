@@ -62,7 +62,7 @@ class RecruitmentsComponent extends React.Component{
       }]
   };
 
-    recruitmentService.editRecruitment(recruitment)
+    recruitmentService.deleteRecruitment(1)
     .then(res=>console.log(res));
   }
 
