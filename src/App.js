@@ -8,6 +8,7 @@ import AuthService from "./services/auth.service";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import { Container } from "react-bootstrap";
+import SkillsComponent from "./components/SkillsComponent/SkillsComponent";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState("");
@@ -21,7 +22,9 @@ const App = () => {
 
   }, [])
 
-  const logOut = () => {
+  const logOut = (e) => {
+    e.preventDefault();
+
     AuthService.logout();
     setCurrentUser("");
   };
@@ -51,6 +54,11 @@ const App = () => {
                 LogOut
               </a>
             </li>
+            <li className="nav-item">
+              <Link to={"/skills"} className="nav-link">
+                Skills
+              </Link>
+            </li>
           </div>
         ) : (
           <div className="navbar-nav ml-auto">
@@ -60,6 +68,8 @@ const App = () => {
               </Link>
             </li>
           </div>
+          
+          
         )}
       </nav>
 
@@ -68,6 +78,7 @@ const App = () => {
           <Route exact path={"/"} element={<Home />} />
           <Route exact path={"/home"} element={<Home />} />
           <Route exact path={"/login"} element={<Login />} />
+          <Route exact path={"/skills"} element={<SkillsComponent/>}/>
         </Routes>
       </Container>
     </div>

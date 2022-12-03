@@ -10,6 +10,9 @@ const api = axios.create({
     headers: {
         'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/json'
+    },
+    validateStatus(status){
+        return status >= 200 && status < 300;//default
     }
 })
 
