@@ -9,6 +9,7 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import { Container } from "react-bootstrap";
 import SkillsComponent from "./components/SkillsComponent/SkillsComponent";
+import RecruitmentsComponent from "./components/RecruitmentsComponent/RecruitmentsComponent.js"
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState("");
@@ -71,6 +72,13 @@ const App = () => {
           
           
         )}
+        <div className="navbar-nav mr-auto">
+          <li className="nav-item">
+            <Link to={"/recruitments"} className="nav-link">
+              Recruitments
+            </Link>
+          </li>
+        </div>
       </nav>
 
       <Container className="mt-3">
@@ -79,6 +87,7 @@ const App = () => {
           <Route exact path={"/home"} element={<Home />} />
           <Route exact path={"/login"} element={<Login />} />
           <Route exact path={"/skills"} element={<SkillsComponent/>}/>
+          <Route exact path={"/recruitments"} element={<RecruitmentsComponent/>}/>
         </Routes>
       </Container>
     </div>
