@@ -10,6 +10,7 @@ import Login from "./components/Login";
 import { Container } from "react-bootstrap";
 import SkillsComponent from "./components/SkillsComponent/SkillsComponent";
 import RecruitmentsComponent from "./components/RecruitmentsComponent/RecruitmentsComponent.js"
+import CreateRecruitmentComponent from "./components/CreateRecruitmentComponent/CreateRecruitmentComponent";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState("");
@@ -88,6 +89,7 @@ const App = () => {
           <Route exact path={"/login"} element={<Login />} />
           <Route exact path={"/skills"} element={<SkillsComponent/>}/>
           <Route exact path={"/recruitments"} element={<RecruitmentsComponent/>}/>
+          <Route exact path={'/createRecruitment'} element={<CreateRecruitmentComponent/>}/>
         </Routes>
       </Container>
     </div>

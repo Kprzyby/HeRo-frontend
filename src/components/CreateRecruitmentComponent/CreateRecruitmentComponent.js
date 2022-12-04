@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './CreateRecruitmentComponent.module.css';
 import recruitmentService from '../../services/recruitment.service';
+import ManageSkillsComponent from '../ManageSkillsComponent/ManageSkillsComponent';
 
 class CreateRecruitmentComponent extends React.Component{
   constructor(props){
     super(props);
-
     this.state={
       begginingDate:new Date(),
       endingDate:new Date(),
@@ -14,8 +14,7 @@ class CreateRecruitmentComponent extends React.Component{
       description:'',
       recruitmentPosition:'',
       localization:'',
-      seniority:'junior',
-      skills:[]
+      seniority:'junior'
     }
 
     this.handleInputChange=this.handleInputChange.bind(this);
@@ -30,8 +29,13 @@ class CreateRecruitmentComponent extends React.Component{
       [name]:value
     });
   }
-  submitForm(e){
-    e.preventDefault();
+  submitForm(e, skills){
+    skills=skills.map(f=>{
+      return {
+        skillId:f.id,
+        skillLevel:f.skillLevel
+      }
+    });
 
     const newRecruitment={
       beginningDate: this.state.begginingDate,
@@ -42,11 +46,11 @@ class CreateRecruitmentComponent extends React.Component{
       recruitmentPosition: this.state.recruitmentPosition,
       localization: this.state.localization,
       seniority: this.state.seniority,
-      skills: this.state.skills
+      skills: skills
     };
 
     recruitmentService.createRecruitment(newRecruitment)
-    .then(res=>console.log(res));
+    .then(res=>{console.log(res)});
   }
 
   render(){
@@ -64,8 +68,8 @@ class CreateRecruitmentComponent extends React.Component{
         <input type='text' id='name' name='name' value={this.state.name} onChange={this.handleInputChange}></input>
         <br></br><br></br>
 
-        <label htmlFor='describtion'>Job describtion</label><br></br>
-        <input type='textarea' id='describtion' name='describtion' value={this.state.description} onChange={this.handleInputChange}></input>
+        <label htmlFor='description'>Job describtion</label><br></br>
+        <textarea id='description' name='description' onChange={this.handleInputChange}></textarea>
         <br></br><br></br>
 
         <label htmlFor='recruitmentPosition'>Position</label><br></br>
@@ -86,7 +90,7 @@ class CreateRecruitmentComponent extends React.Component{
         </select>
         <br></br><br></br>
 
-        <label htmlFor='skills'>Skills</label>
+        <ManageSkillsComponent submitFunction={this.submitForm}></ManageSkillsComponent>
       </form>
     );
   }

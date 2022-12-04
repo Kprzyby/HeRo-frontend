@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './RecruitmentsComponent.module.css';
 import recruitmentService from '../../services/recruitment.service';
+import AddButtonsComponent from '../AddButtonsComponent/AddButtonsComponent';
+import { BrowserRouter as Router, Switch, Route, Redirect,} from "react-router-dom";
 
 class RecruitmentsComponent extends React.Component{
   constructor(props){
@@ -68,7 +70,7 @@ class RecruitmentsComponent extends React.Component{
 
   render(){
     return(
-      <p>Henlo</p>
+      <AddButtonsComponent></AddButtonsComponent>
     )
   }
 }
