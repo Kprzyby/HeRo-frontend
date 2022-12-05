@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
 
 const axiosInstance = axios.create({
     baseURL: 'https://localhost:7210/Candidate/',
@@ -21,7 +22,7 @@ function createCandidate(form) {
         method: 'post',
         data: form,
         headers: formHeaders
-    })
+    }).then(res => res.data)
 }
 
 const candidateService = {
