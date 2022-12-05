@@ -4,73 +4,54 @@ import styles from './RecruitmentsComponent.module.css';
 import recruitmentService from '../../services/recruitment.service';
 import AddButtonsComponent from '../AddButtonsComponent/AddButtonsComponent';
 import { BrowserRouter as Router, Switch, Route, Redirect,} from "react-router-dom";
+import ShowRecruitmentComponent from '../ShowRecruitmentComponent/ShowRecruitmentComponent';
 
 class RecruitmentsComponent extends React.Component{
   constructor(props){
     super(props);
 
     this.state={
-      recruitments:[]
+      recruitments:[],
+      filteringInfo:{
+        name: "",
+        description: "",
+        showOpen: true,
+        showClosed: false,
+        beginningDate: null,
+        endingDate: null,
+        pageNumber: 1,
+        sortOrder: "ASC"
+      }
     }
   }
   componentDidMount(){
-    const filteringInfo={
-      "name": "Rec",
-      "description": "describtion",
-      "showOpen": true,
-      "showClosed": true,
-      "beginningDate": "2022-12-03T18:30:14.849Z",
-      "endingDate": "2022-12-03T18:52:14.849Z",
-      "pageNumber": 1,
-      "sortOrder": "ASC"
-    }
-    const newRecruitmentInfo={
-      beginningDate: "2022-12-03T18:30:14.849Z",
-      endingDate: "2022-12-03T18:30:14.849Z",
-      name: "Rec",
-      description: "describtion",
-      recruiterId: 2,
-      recruitmentPosition: 'dev',
-      localization: 'bia',
-      seniority: 'junior',
-      skills: [
-      {
-        skillId:13,
-        skillLevel:2
-      },
-      {
-        skillId:11,
-        skillLevel:5
-      }]
-  };
-  const recruitment={
-    id:370,
-    beginningDate: "2022-12-03T18:30:14.849Z",
-    endingDate: "2022-12-03T18:30:14.849Z",
-    name: "Rec2",
-    description: "describtion2",
-    recruiterId: 2,
-    recruitmentPosition: 'dev2',
-    localization: 'bia2',
-    seniority: 'mid',
-    skills: [
-      {
-        skillId:13,
-        skillLevel:2
-      },
-      {
-        skillId:11,
-        skillLevel:4
-      }]
-  };
-
-    recruitmentService.deleteRecruitment(1)
-    .then(res=>console.log(res));
+    recruitmentService.getRecruitments(this.state.filteringInfo)
+    .then(res=>{
+      console.log(res);
+      this.setState({
+        recruitments:res.recruitmentDTOs
+      })
+    })
   }
 
   render(){
+    console.log(this.state.recruitments);
     return(
-      <AddButtonsComponent></AddButtonsComponent>
+      <div className={styles.RecruitmentsComponent}>
+        <AddButtonsComponent></AddButtonsComponent><br></br>
+        {this.state.recruitments.map(e=>{
+          return(
+            <ShowRecruitmentComponent
+            beginningDate={e.beginningDate}
+            endingDate={e.endingDate}
+            name={e.name}
+            localization={e.localization}
+            seniority={e.seniority}
+            key={e.id}
+            ></ShowRecruitmentComponent>
+          )
+          })}
+      </div>
     )
   }
 }
