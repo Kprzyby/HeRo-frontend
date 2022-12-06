@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './CreateRecruitmentComponent.module.css';
 import recruitmentService from '../../services/recruitment.service';
 import ManageSkillsComponent from '../ManageSkillsComponent/ManageSkillsComponent';
+import userService from '../../services/user.service';
 
 class CreateRecruitmentComponent extends React.Component{
   constructor(props){
@@ -14,11 +15,22 @@ class CreateRecruitmentComponent extends React.Component{
       description:'',
       recruitmentPosition:'',
       localization:'',
-      seniority:'junior'
+      seniority:'junior',
+      recruiterId:-1,
+      recruiters:[]
     }
 
     this.handleInputChange=this.handleInputChange.bind(this);
     this.submitForm=this.submitForm.bind(this);
+  }
+  componentDidMount(){
+    userService.getRecruiters()
+    .then(res=>{
+      console.log(res);
+      this.setState({
+        recruiters:res
+      });
+    });
   }
 
   handleInputChange(e){
@@ -42,10 +54,10 @@ class CreateRecruitmentComponent extends React.Component{
       endingDate: this.state.endingDate,
       name: this.state.name,
       description: this.state.description,
-      recruiterId: 2,
       recruitmentPosition: this.state.recruitmentPosition,
       localization: this.state.localization,
       seniority: this.state.seniority,
+      recruiterId:this.state.recruiterId,
       skills: skills
     };
 
@@ -87,6 +99,12 @@ class CreateRecruitmentComponent extends React.Component{
           <option value='mid'>mid</option>
           <option value='mid/senior'>mid/senior</option>
           <option value='senior'>senior</option>
+        </select>
+        <br></br><br></br>
+
+        <label htmlFor='recruiter'>Assing a recruiter from the list</label><br></br>
+        <select id='recruiter' name='recruiterId' onChange={this.handleInputChange}>
+          {this.state.recruiters.map(e=><option key={e.id} value={e.id}>{e.fullName}</option>)}
         </select>
         <br></br><br></br>
 

@@ -5,6 +5,7 @@ import recruitmentService from '../../services/recruitment.service';
 import AddButtonsComponent from '../AddButtonsComponent/AddButtonsComponent';
 import { BrowserRouter as Router, Switch, Route, Redirect,} from "react-router-dom";
 import ShowRecruitmentComponent from '../ShowRecruitmentComponent/ShowRecruitmentComponent';
+import ShowRecruitmentDetailsComponent from '../ShowRecruitmentDetailsComponent/ShowRecruitmentDetailsComponent';
 
 class RecruitmentsComponent extends React.Component{
   constructor(props){
@@ -21,8 +22,11 @@ class RecruitmentsComponent extends React.Component{
         endingDate: null,
         pageNumber: 1,
         sortOrder: "ASC"
-      }
+      },
+      clickedId:-1
     }
+
+    this.showRecruitmentDetails=this.showRecruitmentDetails.bind(this);
   }
   componentDidMount(){
     recruitmentService.getRecruitments(this.state.filteringInfo)
@@ -33,6 +37,11 @@ class RecruitmentsComponent extends React.Component{
       })
     })
   }
+  showRecruitmentDetails(e, id){
+    this.setState({
+      clickedId:id
+    });
+  }
 
   render(){
     console.log(this.state.recruitments);
@@ -41,14 +50,16 @@ class RecruitmentsComponent extends React.Component{
         <AddButtonsComponent></AddButtonsComponent><br></br>
         {this.state.recruitments.map(e=>{
           return(
-            <ShowRecruitmentComponent
-            beginningDate={e.beginningDate}
-            endingDate={e.endingDate}
-            name={e.name}
-            localization={e.localization}
-            seniority={e.seniority}
-            key={e.id}
-            ></ShowRecruitmentComponent>
+            <div key={e.id} onClick={f=>this.showRecruitmentDetails(f, e.id)}>
+              <ShowRecruitmentComponent
+                beginningDate={e.beginningDate}
+                endingDate={e.endingDate}
+                name={e.name}
+                localization={e.localization}
+                seniority={e.seniority}
+              ></ShowRecruitmentComponent>
+              <ShowRecruitmentDetailsComponent clickedId={this.state.clickedId} recruitmentId={e.id}></ShowRecruitmentDetailsComponent>
+            </div>
           )
           })}
       </div>
