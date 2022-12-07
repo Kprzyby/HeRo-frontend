@@ -9,6 +9,9 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import { Container } from "react-bootstrap";
 import SkillsComponent from "./components/SkillsComponent/SkillsComponent";
+import CandidateComponent from "./components/Candidate/CandidateComponent";
+import AdminComponent from "./components/Admin/AdminComponent";
+import CreateNewUserComponent from "./components/Admin/CreateNewUserComponent/CreateNewUserComponent";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState("");
@@ -55,6 +58,16 @@ const App = () => {
               </a>
             </li>
             <li className="nav-item">
+              <Link to={"/admin"} className="nav-link">
+                Admin
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/candidate"} className="nav-link">
+                Candidate
+              </Link>
+            </li>
+            <li className="nav-item">
               <Link to={"/skills"} className="nav-link">
                 Skills
               </Link>
@@ -78,7 +91,10 @@ const App = () => {
           <Route exact path={"/"} element={<Home />} />
           <Route exact path={"/home"} element={<Home />} />
           <Route exact path={"/login"} element={<Login />} />
+          <Route exact path={"/candidate"} element={<CandidateComponent />} />
           <Route exact path={"/skills"} element={<SkillsComponent/>}/>
+          <Route exact path={"/admin"} element={<AdminComponent/>}/>
+          <Route exact path={"/admin/createNewUser"} element={<CreateNewUserComponent/>}/>
         </Routes>
       </Container>
     </div>
