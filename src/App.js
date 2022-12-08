@@ -9,6 +9,8 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import { Container } from "react-bootstrap";
 import SkillsComponent from "./components/SkillsComponent/SkillsComponent";
+import RecruitmentsComponent from "./components/RecruitmentsComponent/RecruitmentsComponent.js"
+import CreateRecruitmentComponent from "./components/CreateRecruitmentComponent/CreateRecruitmentComponent";
 import CandidateComponent from "./components/Candidate/CandidateComponent";
 import AdminComponent from "./components/Admin/AdminComponent";
 import CreateNewUserComponent from "./components/Admin/CreateNewUserComponent/CreateNewUserComponent";
@@ -84,6 +86,13 @@ const App = () => {
           
           
         )}
+        <div className="navbar-nav mr-auto">
+          <li className="nav-item">
+            <Link to={"/recruitments"} className="nav-link">
+              Recruitments
+            </Link>
+          </li>
+        </div>
       </nav>
 
       <Container className="mt-3">
@@ -93,6 +102,8 @@ const App = () => {
           <Route exact path={"/login"} element={<Login />} />
           <Route exact path={"/candidate"} element={<CandidateComponent />} />
           <Route exact path={"/skills"} element={<SkillsComponent/>}/>
+          <Route exact path={"/recruitments"} element={<RecruitmentsComponent/>}/>
+          <Route exact path={'/createRecruitment'} element={<CreateRecruitmentComponent/>}/>
           <Route exact path={"/admin"} element={<AdminComponent/>}/>
           <Route exact path={"/admin/createNewUser"} element={<CreateNewUserComponent/>}/>
         </Routes>
