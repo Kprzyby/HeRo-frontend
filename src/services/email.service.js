@@ -36,9 +36,9 @@ const addImapAccount = (port, host, login, password) => {
     }).then(res => res.data)
 }
 
-const EmailService = {
+const emailService = {
     addSmtpAccount,
     addImapAccount
 }
 
-export default EmailService
+export default emailService

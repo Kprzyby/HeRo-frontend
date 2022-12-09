@@ -1,8 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { Form } from "react-bootstrap";
 import { Button } from 'react-bootstrap'
-import UserService from "../../services/user.service";
+import userService from "../../services/user.service";
 //<label htmlFor='filterByName'>Find the skill you are looking for: </label>
 //<input type='text' id='filterByName' onChange={this.filterSkills}></input>
 class UserComponent extends React.Component {
@@ -10,6 +9,13 @@ class UserComponent extends React.Component {
         super(props)
 
         this.state = {
+            filteringInfo:{
+                email: "",
+                userStatus: "",
+                roleName: true,
+                pageNumber: 1,
+                sortOrder: "ASC"
+              },
             id: ""
         }
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -25,7 +31,7 @@ class UserComponent extends React.Component {
     handleSubmit(e) {
         e.preventDefault()
 
-        UserService.getUsers(
+        userService.getUsers(
             this.state.id
 
         ).then(res => console.log(res))

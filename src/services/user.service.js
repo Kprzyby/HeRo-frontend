@@ -35,8 +35,8 @@ function getUsers(id) {
 };
 
 
-const UserService = {
+const userService = {
     getUsers
 }
 
-export default UserService
+export default userService

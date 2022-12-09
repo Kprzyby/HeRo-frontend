@@ -1,7 +1,7 @@
 import React from "react";
 import { Form } from "react-bootstrap";
 import { Button } from 'react-bootstrap'
-import EmailService from "../../../services/email.service";
+import emailService from "../../../services/email.service";
 
 class AddSmtpAccountComponent extends React.Component {
     constructor(props) {
@@ -58,7 +58,7 @@ class AddSmtpAccountComponent extends React.Component {
     handleSubmit(e) {
         e.preventDefault()
 
-        EmailService.addSmtpAccount(
+        emailService.addSmtpAccount(
             this.state.port,
             this.state.name,
             this.state.login,
