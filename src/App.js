@@ -100,7 +100,7 @@ const App = () => {
           <Route exact path={"/"} element={<Home />} />
           <Route exact path={"/home"} element={<Home />} />
           <Route exact path={"/login"} element={<Login />} />
-          <Route exact path={"/candidate"} element={<CandidateComponent />} />
+          <Route path={'/candidate'} element={<CandidateComponent />} />
           <Route exact path={"/skills"} element={<SkillsComponent/>}/>
           <Route exact path={"/recruitments"} element={<RecruitmentsComponent/>}/>
           <Route exact path={'/createRecruitment'} element={<CreateRecruitmentComponent/>}/>

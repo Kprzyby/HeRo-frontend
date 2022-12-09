@@ -57,6 +57,7 @@ class RecruitmentsComponent extends React.Component{
                 name={e.name}
                 localization={e.localization}
                 seniority={e.seniority}
+                id={e.id}
               ></ShowRecruitmentComponent>
               <ShowRecruitmentDetailsComponent clickedId={this.state.clickedId} recruitmentId={e.id}></ShowRecruitmentDetailsComponent>
             </div>
