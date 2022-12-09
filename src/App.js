@@ -14,6 +14,9 @@ import CreateRecruitmentComponent from "./components/CreateRecruitmentComponent/
 import CandidateComponent from "./components/Candidate/CandidateComponent";
 import AdminComponent from "./components/Admin/AdminComponent";
 import CreateNewUserComponent from "./components/Admin/CreateNewUserComponent/CreateNewUserComponent";
+import AddSmtpAccount from "./components/Admin/AddSmtpAccountComponent/AddSmtpAccountComponent";
+import AddImapAccount from "./components/Admin/AddImapAccountComponent/AddImapAccountComponent";
+import UserComponent from "./components/User/UserComponent";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState("");
@@ -74,6 +77,11 @@ const App = () => {
                 Skills
               </Link>
             </li>
+            <li className="nav-item">
+              <Link to={"/user"} className="nav-link">
+                User
+              </Link>
+            </li>
           </div>
         ) : (
           <div className="navbar-nav ml-auto">
@@ -83,8 +91,8 @@ const App = () => {
               </Link>
             </li>
           </div>
-          
-          
+
+
         )}
         <div className="navbar-nav mr-auto">
           <li className="nav-item">
@@ -100,12 +108,15 @@ const App = () => {
           <Route exact path={"/"} element={<Home />} />
           <Route exact path={"/home"} element={<Home />} />
           <Route exact path={"/login"} element={<Login />} />
-          <Route path={'/candidate'} element={<CandidateComponent />} />
-          <Route exact path={"/skills"} element={<SkillsComponent/>}/>
+          <Route exact path={"/candidate"} element={<CandidateComponent />} />
+          <Route exact path={"/skills"} element={<SkillsComponent />} />
           <Route exact path={"/recruitments"} element={<RecruitmentsComponent/>}/>
           <Route exact path={'/createRecruitment'} element={<CreateRecruitmentComponent/>}/>
-          <Route exact path={"/admin"} element={<AdminComponent/>}/>
-          <Route exact path={"/admin/createNewUser"} element={<CreateNewUserComponent/>}/>
+          <Route exact path={"/admin"} element={<AdminComponent />} />
+          <Route exact path={"/admin/createNewUser"} element={<CreateNewUserComponent />} />
+          <Route exact path={"/admin/addSmtpAccount"} element={<AddSmtpAccount />} />
+          <Route exact path={"/admin/addImapAccount"} element={<AddImapAccount />} />
+          <Route exact path={"/user"} element={<UserComponent />} />
         </Routes>
       </Container>
     </div>

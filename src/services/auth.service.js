@@ -11,7 +11,7 @@ const api = axios.create({
         'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/json'
     },
-    validateStatus(status){
+    validateStatus(status) {
         return status >= 200 && status < 300;//default
     }
 })
@@ -25,6 +25,8 @@ const createUser = (name, surname, email, password, secondPassword) => {
         secondPassword
     }).then(res => res.data)
 }
+
+
 
 const login = (email, password) => {
     return api.post(API_URL + "/SignIn", {
@@ -43,14 +45,14 @@ const login = (email, password) => {
 const logout = () => {
     localStorage.removeItem("user")
     return api.get(API_URL + "/LogOut")
-    .then((response) => {
-        console.log(response.status)
-    })
+        .then((response) => {
+            console.log(response.status)
+        })
 }
 
 const getCurrentUser = () => {
     return JSON.parse(localStorage.getItem("user"));
-  };
+};
 
 const AuthService = {
     createUser,
