@@ -36,7 +36,7 @@ function getRecruitments(filteringInfo){
           sort: [
             {
               key: "Name",
-              value: filteringInfo.sortOrder
+              value: 'ASC'
             }
           ]
         }

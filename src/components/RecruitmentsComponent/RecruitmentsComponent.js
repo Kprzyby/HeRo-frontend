@@ -6,6 +6,8 @@ import AddButtonsComponent from '../AddButtonsComponent/AddButtonsComponent';
 import { BrowserRouter as Router, Switch, Route, Redirect,} from "react-router-dom";
 import ShowRecruitmentComponent from '../ShowRecruitmentComponent/ShowRecruitmentComponent';
 import ShowRecruitmentDetailsComponent from '../ShowRecruitmentDetailsComponent/ShowRecruitmentDetailsComponent';
+import ManageFiltersComponent from '../ManageFiltersComponent/ManageFiltersComponent';
+import { Button } from 'react-bootstrap';
 
 class RecruitmentsComponent extends React.Component{
   constructor(props){
@@ -13,41 +15,94 @@ class RecruitmentsComponent extends React.Component{
 
     this.state={
       recruitments:[],
-      filteringInfo:{
-        name: "",
-        description: "",
-        showOpen: true,
-        showClosed: false,
-        beginningDate: null,
-        endingDate: null,
-        pageNumber: 1,
-        sortOrder: "ASC"
-      },
+      name: "",
+      describtion: "",
+      beginningDate: null,
+      endingDate: null,
+      showOpen: true,
+      showClosed: false,
+      pageNumber: 1,
+      totalCount:0,
+      lastPageNumber:0,
       clickedId:-1
     }
 
     this.showRecruitmentDetails=this.showRecruitmentDetails.bind(this);
+    this.handleInputChange=this.handleInputChange.bind(this);
+    this.showNextPage=this.showNextPage.bind(this);
+    this.showPreviousPage=this.showPreviousPage.bind(this);
   }
   componentDidMount(){
-    recruitmentService.getRecruitments(this.state.filteringInfo)
+    recruitmentService.getRecruitments(this.getFilteringInfo())
     .then(res=>{
       console.log(res);
       this.setState({
-        recruitments:res.recruitmentDTOs
+        recruitments:res.recruitmentDTOs,
+        totalCount:res.totalCount,
+        lastPageNumber:Math.ceil(res.totalCount/5)
       })
     })
+  }
+  componentDidUpdate(previousProps, previousState){
+    if(previousState.name!==this.state.name || previousState.beginningDate!==this.state.beginningDate ||
+      previousState.endingDate!==this.state.endingDate || previousState.showOpen!==this.state.showOpen ||
+      previousState.showClosed!==this.state.showClosed || previousState.pageNumber!==this.state.pageNumber){
+
+      recruitmentService.getRecruitments(this.getFilteringInfo())
+      .then(res=>{
+        this.setState({
+          recruitments:res.recruitmentDTOs,
+          totalCount:res.totalCount,
+          lastPageNumber:Math.ceil(res.totalCount/5)
+        })
+      })
+    }
+  }
+
+  getFilteringInfo(){
+    const filteringInfo={
+      name:this.state.name,
+      beginningDate:this.state.beginningDate,
+      endingDate:this.state.endingDate,
+      showOpen:this.state.showOpen,
+      showClosed:this.state.showClosed,
+      pageNumber:this.state.pageNumber,
+    }
+
+    return filteringInfo;
   }
   showRecruitmentDetails(e, id){
     this.setState({
       clickedId:id
     });
   }
+  handleInputChange(e){
+    const value=e.target.type==='checkbox'?e.target.checked:e.target.value;
+
+    this.setState({
+      [e.target.name]:value
+    });
+  }
+  showNextPage(){
+    this.setState((state)=>{
+      return{
+        pageNumber:state.pageNumber+1
+      }
+    })
+  }
+  showPreviousPage(){
+    this.setState((state)=>{
+      return{
+        pageNumber:state.pageNumber-1
+      }
+    })
+  }
 
   render(){
-    console.log(this.state.recruitments);
     return(
       <div className={styles.RecruitmentsComponent}>
         <AddButtonsComponent></AddButtonsComponent><br></br>
+        <ManageFiltersComponent handleInputChange={this.handleInputChange}></ManageFiltersComponent><br></br>
         {this.state.recruitments.map(e=>{
           return(
             <div key={e.id} onClick={f=>this.showRecruitmentDetails(f, e.id)}>
@@ -62,6 +117,13 @@ class RecruitmentsComponent extends React.Component{
             </div>
           )
           })}
+          {this.state.pageNumber===1
+          ?<Button className={styles.leftArrow} disabled>&#10094;&#9866;</Button>
+          :<Button className={styles.leftArrow} onClick={this.showPreviousPage}>&#10094;&#9866;</Button>}
+          <span> Page {this.state.pageNumber} out of {this.state.lastPageNumber} </span>
+          {this.state.pageNumber===this.state.lastPageNumber
+          ?<Button className={styles.rightArrow} disabled>&#9866;&#10095;</Button>
+          :<Button className={styles.rightArrow} onClick={this.showNextPage}>&#9866;&#10095;</Button>}
       </div>
     )
   }

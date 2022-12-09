@@ -1,2 +1,11 @@
 .RecruitmentsComponent {
+    position:absolute;
+}
+.rightArrow{
+
+}
+.leftArrow{
+    position:relative;
+    bottom: 0;
+    clear:left;
 }
