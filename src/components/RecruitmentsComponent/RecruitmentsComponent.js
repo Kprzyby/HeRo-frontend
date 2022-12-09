@@ -31,32 +31,22 @@ class RecruitmentsComponent extends React.Component{
     this.handleInputChange=this.handleInputChange.bind(this);
     this.showNextPage=this.showNextPage.bind(this);
     this.showPreviousPage=this.showPreviousPage.bind(this);
+    this.fetchRecruitments=this.fetchRecruitments.bind(this);
   }
   componentDidMount(){
-    recruitmentService.getRecruitments(this.getFilteringInfo())
-    .then(res=>{
-      console.log(res);
-      this.setState({
-        recruitments:res.recruitmentDTOs,
-        totalCount:res.totalCount,
-        lastPageNumber:Math.ceil(res.totalCount/5)
-      })
-    })
+    this.fetchRecruitments();
   }
-  componentDidUpdate(previousProps, previousState){
-    if(previousState.name!==this.state.name || previousState.beginningDate!==this.state.beginningDate ||
-      previousState.endingDate!==this.state.endingDate || previousState.showOpen!==this.state.showOpen ||
-      previousState.showClosed!==this.state.showClosed || previousState.pageNumber!==this.state.pageNumber){
-
+  fetchRecruitments(){
       recruitmentService.getRecruitments(this.getFilteringInfo())
       .then(res=>{
+        console.log('----------------------------------------------------------------');
+        console.log(res);
         this.setState({
           recruitments:res.recruitmentDTOs,
           totalCount:res.totalCount,
           lastPageNumber:Math.ceil(res.totalCount/5)
         })
       })
-    }
   }
 
   getFilteringInfo(){
@@ -77,25 +67,28 @@ class RecruitmentsComponent extends React.Component{
     });
   }
   handleInputChange(e){
+    console.log(this.state.name);
     const value=e.target.type==='checkbox'?e.target.checked:e.target.value;
+    console.log(value);
 
     this.setState({
-      [e.target.name]:value
-    });
+      [e.target.name]:value,
+      pageNumber:1
+    },()=>this.fetchRecruitments());
   }
   showNextPage(){
     this.setState((state)=>{
       return{
         pageNumber:state.pageNumber+1
       }
-    })
+    },()=>this.fetchRecruitments());
   }
   showPreviousPage(){
     this.setState((state)=>{
       return{
         pageNumber:state.pageNumber-1
       }
-    })
+    },()=>this.fetchRecruitments());
   }
 
   render(){
