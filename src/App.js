@@ -68,11 +68,6 @@ const App = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to={"/candidate"} className="nav-link">
-                Candidate
-              </Link>
-            </li>
-            <li className="nav-item">
               <Link to={"/skills"} className="nav-link">
                 Skills
               </Link>
