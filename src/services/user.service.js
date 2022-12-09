@@ -19,7 +19,7 @@ function deleteUser(id) {
         }
     });
 }
-\
+
 function getUsers(id) {
     if (!id) {  //nie działa lista 
         return api({
