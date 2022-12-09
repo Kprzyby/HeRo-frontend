@@ -12,8 +12,9 @@ import SkillsComponent from "./components/SkillsComponent/SkillsComponent";
 import CandidateComponent from "./components/Candidate/CandidateComponent";
 import AdminComponent from "./components/Admin/AdminComponent";
 import CreateNewUserComponent from "./components/Admin/CreateNewUserComponent/CreateNewUserComponent";
-import AddSmtpAccount from "./components/AddSmtpAccountComponent/AddSmtpAccountComponent";
-import AddImapAccount from "./components/AddImapAccountComponent/AddImapAccountComponent";
+import AddSmtpAccount from "./components/Admin/AddSmtpAccountComponent/AddSmtpAccountComponent";
+import AddImapAccount from "./components/Admin/AddImapAccountComponent/AddImapAccountComponent";
+import UserComponent from "./components/User/UserComponent";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState("");
@@ -74,6 +75,11 @@ const App = () => {
                 Skills
               </Link>
             </li>
+            <li className="nav-item">
+              <Link to={"/user"} className="nav-link">
+                User
+              </Link>
+            </li>
           </div>
         ) : (
           <div className="navbar-nav ml-auto">
@@ -99,6 +105,7 @@ const App = () => {
           <Route exact path={"/admin/createNewUser"} element={<CreateNewUserComponent />} />
           <Route exact path={"/admin/addSmtpAccount"} element={<AddSmtpAccount />} />
           <Route exact path={"/admin/addImapAccount"} element={<AddImapAccount />} />
+          <Route exact path={"/user"} element={<UserComponent />} />
         </Routes>
       </Container>
     </div>

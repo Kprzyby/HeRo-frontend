@@ -1,33 +1,37 @@
 import React from "react";
 import { Form } from "react-bootstrap";
 import { Button } from 'react-bootstrap'
-import EmailService from "../../services/email.service";
+import EmailService from "../../../services/email.service";
 
-class AddImapAccountComponent extends React.Component {
+class AddSmtpAccountComponent extends React.Component {
     constructor(props) {
         super(props)
 
         this.state = {
             port: "",
-            host: "",
+            name: "",
             login: "",
-            password: ""
+            password: "",
+            sender: "",
+            host: ""
         }
 
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handlePortChange = this.handlePortChange.bind(this)
-        this.handleHostChange = this.handleHostChange.bind(this)
+        this.handleNameChange = this.handleNameChange.bind(this)
         this.handleLoginChange = this.handleLoginChange.bind(this)
         this.handlePasswordChange = this.handlePasswordChange.bind(this)
+        this.handleSenderChange = this.handleSenderChange.bind(this)
+        this.handleHostChange = this.handleHostChange.bind(this)
     }
     handlePortChange(e) {
         this.setState({
             port: e.target.value
         })
     }
-    handleHostChange(e) {
+    handleNameChange(e) {
         this.setState({
-            host: e.target.value
+            name: e.target.value
         })
     }
     handleLoginChange(e) {
@@ -40,15 +44,27 @@ class AddImapAccountComponent extends React.Component {
             password: e.target.value
         })
     }
+    handleSenderChange(e) {
+        this.setState({
+            sender: e.target.value
+        })
+    }
+    handleHostChange(e) {
+        this.setState({
+            host: e.target.value
+        })
+    }
 
     handleSubmit(e) {
         e.preventDefault()
 
-        EmailService.addImapAccount(
+        EmailService.addSmtpAccount(
             this.state.port,
-            this.state.host,
+            this.state.name,
             this.state.login,
-            this.state.password
+            this.state.password,
+            this.state.sender,
+            this.state.host
         ).then(res => console.log(res))
     }
 
@@ -60,8 +76,8 @@ class AddImapAccountComponent extends React.Component {
                     <Form.Control type="number" onChange={this.handlePortChange}></Form.Control>
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Host</Form.Label>
-                    <Form.Control type="text" onChange={this.handleHostChange}></Form.Control>
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control type="text" onChange={this.handleNameChange}></Form.Control>
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Login</Form.Label>
@@ -71,10 +87,18 @@ class AddImapAccountComponent extends React.Component {
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" onChange={this.handlePasswordChange}></Form.Control>
                 </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Sender</Form.Label>
+                    <Form.Control type="text" onChange={this.handleSenderChange}></Form.Control>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Host</Form.Label>
+                    <Form.Control type="text" onChange={this.handleHostChange}></Form.Control>
+                </Form.Group>
                 <Button variant="primary" type="submit">Submit</Button>
             </Form>
         )
     }
 }
 
-export default AddImapAccountComponent
+export default AddSmtpAccountComponent
