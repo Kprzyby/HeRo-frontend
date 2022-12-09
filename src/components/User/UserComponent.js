@@ -9,44 +9,54 @@ class UserComponent extends React.Component {
         super(props)
 
         this.state = {
-            filteringInfo:{
-                email: "",
-                userStatus: "",
-                roleName: true,
-                pageNumber: 1,
-                sortOrder: "ASC"
-              },
-            id: ""
+            id: "",
+            users: []
         }
-        this.handleSubmit = this.handleSubmit.bind(this)
-        this.handleIdChange = this.handleIdChange.bind(this)
 
+        this.handleGetUsers = this.handleGetUsers.bind(this)
+        this.handleIdChange = this.handleIdChange.bind(this)
+        this.handleDeleteUser = this.handleDeleteUser.bind(this)
     }
     handleIdChange(e) {
         this.setState({
             id: e.target.value
         })
     }
-
-    handleSubmit(e) {
+    handleGetUsers(e) {
         e.preventDefault()
 
-        userService.getUsers(
-            this.state.id
-
-        ).then(res => console.log(res))
+        userService.getUsers(this.state.id)
+            .then(res => {
+                this.setState({
+                    users: res
+                });
+            })
     }
+    handleDeleteUser(e) {
+        e.preventDefault()
+        userService.deleteUser(this.state.id).then(res => console.log(res))
+    }
+
 
     render() {
         return (
             <div>
-                <Form onSubmit={this.handleSubmit}>
+                <Form onSubmit={this.handleGetUsers}>
                     <Form.Group className="mb-3">
                         <Form.Label>Get user specified by id</Form.Label>
                         <Form.Control type="number" onChange={this.handleIdChange}></Form.Control>
                     </Form.Group>
                     <Button variant="primary" type="submit">Submit</Button>
                 </Form>
+
+                <Form onSubmit={this.handleDeleteUser}>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Delete user specified by id</Form.Label>
+                        <Form.Control type="number" onChange={this.handleIdChange}></Form.Control>
+                    </Form.Group>
+                    <Button variant="primary" type="submit">Submit</Button>
+                </Form>
+
                 <table>
                     <thead>
                         <tr>
@@ -57,7 +67,6 @@ class UserComponent extends React.Component {
                     </thead>
                 </table>
             </div>
-
 
         )
     }
