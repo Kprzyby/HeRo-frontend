@@ -12,13 +12,13 @@ const axiosInstance = axios.create({
 
 function getUsers(id) {
     if (!id) {
-        return api({
+        return axiosInstance({
             url: 'GetList',
             method: 'get',
         }).then(res => res.data);
     }//nie działa lista 
     else {
-        return api({
+        return axiosInstance({
             url: `/Get/${id}`,
             method: 'get',
             params: {
