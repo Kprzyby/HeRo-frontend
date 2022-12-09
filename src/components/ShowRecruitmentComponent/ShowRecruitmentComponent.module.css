@@ -1,1 +1,22 @@
-.ShowRecruitmentComponent {}
+.ShowRecruitmentComponent {
+    border:solid black thin;
+    background-color: lightskyblue;
+    clear:both;
+    float:left;
+    width:50vh;
+    margin:1vh;
+    padding: 1vh;
+    cursor:pointer;
+}
+.positioningContext{
+    position:relative;
+}
+.title{
+    font-weight: bold;
+
+}
+.expiryDate{
+    position: absolute;
+    top:0;
+    left:0;
+}
