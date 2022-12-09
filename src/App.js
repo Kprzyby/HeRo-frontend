@@ -12,6 +12,8 @@ import SkillsComponent from "./components/SkillsComponent/SkillsComponent";
 import CandidateComponent from "./components/Candidate/CandidateComponent";
 import AdminComponent from "./components/Admin/AdminComponent";
 import CreateNewUserComponent from "./components/Admin/CreateNewUserComponent/CreateNewUserComponent";
+import AddSmtpAccount from "./components/AddSmtpAccountComponent/AddSmtpAccountComponent";
+import AddImapAccount from "./components/AddImapAccountComponent/AddImapAccountComponent";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState("");
@@ -81,8 +83,8 @@ const App = () => {
               </Link>
             </li>
           </div>
-          
-          
+
+
         )}
       </nav>
 
@@ -92,9 +94,11 @@ const App = () => {
           <Route exact path={"/home"} element={<Home />} />
           <Route exact path={"/login"} element={<Login />} />
           <Route exact path={"/candidate"} element={<CandidateComponent />} />
-          <Route exact path={"/skills"} element={<SkillsComponent/>}/>
-          <Route exact path={"/admin"} element={<AdminComponent/>}/>
-          <Route exact path={"/admin/createNewUser"} element={<CreateNewUserComponent/>}/>
+          <Route exact path={"/skills"} element={<SkillsComponent />} />
+          <Route exact path={"/admin"} element={<AdminComponent />} />
+          <Route exact path={"/admin/createNewUser"} element={<CreateNewUserComponent />} />
+          <Route exact path={"/admin/addSmtpAccount"} element={<AddSmtpAccount />} />
+          <Route exact path={"/admin/addImapAccount"} element={<AddImapAccount />} />
         </Routes>
       </Container>
     </div>
