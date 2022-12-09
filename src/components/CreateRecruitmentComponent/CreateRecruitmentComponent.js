@@ -4,6 +4,8 @@ import styles from './CreateRecruitmentComponent.module.css';
 import recruitmentService from '../../services/recruitment.service';
 import ManageSkillsComponent from '../ManageSkillsComponent/ManageSkillsComponent';
 import userService from '../../services/user.service';
+import {Link} from 'react-router-dom';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 class CreateRecruitmentComponent extends React.Component{
   constructor(props){
@@ -17,11 +19,13 @@ class CreateRecruitmentComponent extends React.Component{
       localization:'',
       seniority:'junior',
       recruiterId:-1,
-      recruiters:[]
+      recruiters:[],
+      skills:[]
     }
 
     this.handleInputChange=this.handleInputChange.bind(this);
     this.submitForm=this.submitForm.bind(this);
+    this.changeSkills=this.changeSkills.bind(this);
   }
   componentDidMount(){
     userService.getRecruiters()
@@ -41,13 +45,20 @@ class CreateRecruitmentComponent extends React.Component{
       [name]:value
     });
   }
-  submitForm(e, skills){
-    skills=skills.map(f=>{
+  changeSkills(skills){
+    this.setState({
+      skills:skills
+    });
+  }
+  submitForm(e){
+    const skills=this.state.skills.map(f=>{
       return {
         skillId:f.id,
         skillLevel:f.skillLevel
       }
     });
+
+    console.log(this.state.skills);
 
     const newRecruitment={
       beginningDate: this.state.begginingDate,
@@ -108,7 +119,8 @@ class CreateRecruitmentComponent extends React.Component{
         </select>
         <br></br><br></br>
 
-        <ManageSkillsComponent submitFunction={this.submitForm}></ManageSkillsComponent>
+        <ManageSkillsComponent changeSkills={this.changeSkills}></ManageSkillsComponent>
+        <Link className='btn btn-primary' to={"/recruitments"} onClick={this.submitForm}>Done!</Link>
       </form>
     );
   }

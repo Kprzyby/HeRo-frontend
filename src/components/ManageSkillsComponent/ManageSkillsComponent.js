@@ -6,30 +6,55 @@ import {StarFill} from 'react-bootstrap-icons'
 import {XLg} from 'react-bootstrap-icons'
 import { Rating } from '@mui/material';
 import { Button } from 'react-bootstrap';
-import {Link} from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 class ManageSkillsComponent extends React.Component{
   constructor(props){
     super(props);
 
+    let skillsUsed;
+
+    if(props.skillsUsed!=[]){
+      skillsUsed=props.skillsUsed.map(e=>{
+        return({
+            id:e.skillId,
+            name:e.name,
+            skillLevel:e.skillLevel
+          })
+      });
+    }
+    else{
+      skillsUsed=props.skillsUsed;
+    }
+
     this.state={
       skillsAvailable:[],
-      skillsUsed:[]
+      skillsUsed:skillsUsed
     }
 
     this.addSkillToUsed=this.addSkillToUsed.bind(this);
     this.deleteSkillFromUsed=this.deleteSkillFromUsed.bind(this);
     this.setSkillRating=this.setSkillRating.bind(this);
-    this.submiForm=this.submiForm.bind(this);
   }
   componentDidMount(){
-    skillService.getSkills()
-    .then(res=>{
-      this.setState({
-        skillsAvailable:res
+    if(this.props.skillsUsed!=[]){
+      skillService.getSkills()
+      .then(res=>{
+        let skillsAvailable=res.filter(e=>!this.props.skillsUsed.some(f=>f.skillId===e.id));
+
+        this.setState({
+          skillsAvailable:skillsAvailable
+        });
       });
-    });
+    }
+    else{ 
+      skillService.getSkills()
+      .then(res=>{
+        this.setState({
+          skillsAvailable:res
+        });
+      });
+    }
   }
 
   addSkillToUsed(e){
@@ -78,10 +103,8 @@ class ManageSkillsComponent extends React.Component{
 
     this.setState({
       skillsUsed:skillsUsed
-    });
-  }
-  submiForm(e){
-    this.props.submitFunction(e, this.state.skillsUsed);
+    },
+    ()=>this.props.changeSkills(this.state.skillsUsed));
   }
 
   render(){
@@ -89,7 +112,7 @@ class ManageSkillsComponent extends React.Component{
       <div>
         <label htmlFor='skills'>Choose the requirements from the list:</label><br></br>
         <select id='skills' value='Requirements' onChange={this.addSkillToUsed}>
-          <option disabled value='Requirements'>Requirements</option>
+          <option key={-1} disabled value='Requirements'>Requirements</option>
           {this.state.skillsAvailable.map(e=><option key={e.id} value={JSON.stringify(e)}>{e.name}</option>)}
         </select><br></br><br></br>
 
@@ -102,17 +125,18 @@ class ManageSkillsComponent extends React.Component{
             </div>
           );
         })}<br></br>
-
-        <Link className='btn btn-primary' to={"/recruitments"} onClick={this.submiForm}>Done!</Link>
       </div>
     )
   }
 }
 
 ManageSkillsComponent.propTypes = {
-  submitFunction:PropTypes.func
+  changeSkills:PropTypes.func,
+  skillsUsed:PropTypes.array
 };
 
-ManageSkillsComponent.defaultProps = {};
+ManageSkillsComponent.defaultProps = {
+  skillsUsed:[]
+};
 
 export default ManageSkillsComponent;
