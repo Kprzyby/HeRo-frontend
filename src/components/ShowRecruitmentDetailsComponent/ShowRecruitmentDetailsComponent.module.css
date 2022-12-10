@@ -1,1 +1,8 @@
-.ShowRecruitmentDetailsComponent {}
+.ShowRecruitmentDetailsComponent {
+    float:right;
+    border:solid black thin;
+    background-color: lightskyblue;
+}
+label{
+    font-weight: bold;
+}
