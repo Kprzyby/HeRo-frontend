@@ -12,24 +12,9 @@ class ManageSkillsComponent extends React.Component{
   constructor(props){
     super(props);
 
-    let skillsUsed;
-
-    if(props.skillsUsed!=[]){
-      skillsUsed=props.skillsUsed.map(e=>{
-        return({
-            id:e.skillId,
-            name:e.name,
-            skillLevel:e.skillLevel
-          })
-      });
-    }
-    else{
-      skillsUsed=props.skillsUsed;
-    }
-
     this.state={
       skillsAvailable:[],
-      skillsUsed:skillsUsed
+      skillsUsed:props.skillsUsed
     }
 
     this.addSkillToUsed=this.addSkillToUsed.bind(this);
@@ -40,7 +25,7 @@ class ManageSkillsComponent extends React.Component{
     if(this.props.skillsUsed!=[]){
       skillService.getSkills()
       .then(res=>{
-        let skillsAvailable=res.filter(e=>!this.props.skillsUsed.some(f=>f.skillId===e.id));
+        let skillsAvailable=res.filter(e=>!this.props.skillsUsed.some(f=>f.id===e.id));
 
         this.setState({
           skillsAvailable:skillsAvailable
@@ -87,7 +72,7 @@ class ManageSkillsComponent extends React.Component{
     });
   }
   setSkillRating(e, id, newValue){
-    console.log(this.state.skillsUsed[0].skillLevel);
+    console.log(newValue);
     const skillsUsed=this.state.skillsUsed.map(f=>{
       if(f.id===id){
         return {
@@ -108,6 +93,7 @@ class ManageSkillsComponent extends React.Component{
   }
 
   render(){
+    console.log(this.state.skillsUsed)
     return(
       <div>
         <label htmlFor='skills'>Choose the requirements from the list:</label><br></br>

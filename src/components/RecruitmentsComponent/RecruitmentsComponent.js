@@ -32,6 +32,9 @@ class RecruitmentsComponent extends React.Component{
     this.showNextPage=this.showNextPage.bind(this);
     this.showPreviousPage=this.showPreviousPage.bind(this);
     this.fetchRecruitments=this.fetchRecruitments.bind(this);
+    this.updateRecruitment=this.updateRecruitment.bind(this);
+    this.endRecruitment=this.endRecruitment.bind(this);
+    this.deleteRecruitment=this.deleteRecruitment.bind(this);
   }
   componentDidMount(){
     this.fetchRecruitments();
@@ -90,6 +93,39 @@ class RecruitmentsComponent extends React.Component{
       }
     },()=>this.fetchRecruitments());
   }
+  updateRecruitment(id){
+    recruitmentService.getRecruitment(id)
+      .then(res=>{
+        const recruitments=this.state.recruitments.map(e=>{
+          if(e.id===id){
+            return res;
+          }
+          else{
+            return e;
+          }
+        });
+
+        this.setState({
+          recruitments:recruitments
+        })
+      })
+  }
+  endRecruitment(id){
+    recruitmentService.endRecruitment(id)
+      .then(res=>{
+        this.fetchRecruitments();
+      })
+  }
+  deleteRecruitment(id){
+    recruitmentService.deleteRecruitment(id)
+      .then(res=>{
+        this.fetchRecruitments();
+
+        this.setState({
+          clickedId:-1
+        });
+      })
+  }
 
   render(){
     return(
@@ -105,8 +141,9 @@ class RecruitmentsComponent extends React.Component{
                 name={e.name}
                 localization={e.localization}
                 seniority={e.seniority}
+                endedDate={e.endedDate}
               ></ShowRecruitmentComponent>
-              <ShowRecruitmentDetailsComponent clickedId={this.state.clickedId} recruitmentId={e.id}></ShowRecruitmentDetailsComponent>
+              <ShowRecruitmentDetailsComponent deleteRecruitment={this.deleteRecruitment} endRecruitment={this.endRecruitment} updateRecruitment={this.updateRecruitment} clickedId={this.state.clickedId} recruitmentId={e.id}></ShowRecruitmentDetailsComponent>
             </div>
           )
           })}
