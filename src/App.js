@@ -14,6 +14,7 @@ import CreateRecruitmentComponent from "./components/CreateRecruitmentComponent/
 import CandidateComponent from "./components/Candidate/CandidateComponent";
 import AdminComponent from "./components/Admin/AdminComponent";
 import CreateNewUserComponent from "./components/Admin/CreateNewUserComponent/CreateNewUserComponent";
+import ReportsComponent from "./components/ReportsComponent/ReportsComponent"
 import AddSmtpAccount from "./components/Admin/AddSmtpAccountComponent/AddSmtpAccountComponent";
 import AddImapAccount from "./components/Admin/AddImapAccountComponent/AddImapAccountComponent";
 import UserComponent from "./components/User/UserComponent";
@@ -78,6 +79,11 @@ const App = () => {
               </Link>
             </li>
             <li className="nav-item">
+              <Link to={"/reports"} className="nav-link">
+                Reports
+              </Link>
+            </li>
+            <li className="nav-item">
               <Link to={"/user"} className="nav-link">
                 User
               </Link>
@@ -112,6 +118,7 @@ const App = () => {
           <Route exact path={"/skills"} element={<SkillsComponent />} />
           <Route exact path={"/recruitments"} element={<RecruitmentsComponent/>}/>
           <Route exact path={'/createRecruitment'} element={<CreateRecruitmentComponent/>}/>
+          <Route exact path={"/reports"} element={<ReportsComponent/>}/>
           <Route exact path={"/admin"} element={<AdminComponent />} />
           <Route exact path={"/admin/createNewUser"} element={<CreateNewUserComponent />} />
           <Route exact path={"/admin/addSmtpAccount"} element={<AddSmtpAccount />} />
