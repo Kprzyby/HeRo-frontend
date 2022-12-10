@@ -8,7 +8,25 @@ const axiosInstance = axios.create({
         'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/json'
     },
-});
+})
+
+function getUsers(id) {
+    if (!id) {
+        return axiosInstance({
+            url: 'GetList',
+            method: 'get',
+        }).then(res => res.data);
+    }//nie działa lista 
+    else {
+        return axiosInstance({
+            url: `/Get/${id}`,
+            method: 'get',
+            params: {
+                id: id
+            }
+        }).then(res => res.data);
+    }
+};
 
 function getRecruiters(){
     return axiosInstance({
@@ -18,8 +36,9 @@ function getRecruiters(){
     .then(res=>res.data);
 }
 
-const userService={
+const userService = {
+    getUsers,
     getRecruiters
-};
+}
 
-export default userService;
+export default userService

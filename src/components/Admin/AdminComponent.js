@@ -8,7 +8,14 @@ class AdminComponent extends React.Component {
 
     render() {
         return (
-            <Link to={"createNewUser"}>Create user</Link>
+            <div>
+                <Link to={"createNewUser"}>Create user</Link>
+                <br></br>
+                <Link to={"addSmtpAccount"}>Add smtp acc</Link>
+                <br></br>
+                <Link to={"addImapAccount"}>Add imap acc</Link>
+            </div>
+
         )
     }
 }

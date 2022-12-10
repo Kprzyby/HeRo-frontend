@@ -142,6 +142,7 @@ class RecruitmentsComponent extends React.Component{
                 localization={e.localization}
                 seniority={e.seniority}
                 endedDate={e.endedDate}
+                id={e.id}
               ></ShowRecruitmentComponent>
               <ShowRecruitmentDetailsComponent deleteRecruitment={this.deleteRecruitment} endRecruitment={this.endRecruitment} updateRecruitment={this.updateRecruitment} clickedId={this.state.clickedId} recruitmentId={e.id}></ShowRecruitmentDetailsComponent>
             </div>

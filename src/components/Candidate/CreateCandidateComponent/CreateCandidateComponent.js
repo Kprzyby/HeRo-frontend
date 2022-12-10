@@ -29,6 +29,7 @@ class CreateCandidateComponent extends React.Component {
         event.preventDefault()
         var formData = new FormData(form)
         candidateService.createCandidate(formData).then(res => console.log(res))
+        this.props.redirect()
     }
 
 
