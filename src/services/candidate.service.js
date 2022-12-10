@@ -25,8 +25,17 @@ function createCandidate(form) {
     }).then(res => res.data)
 }
 
+function getCandidates(filteringInfo) {
+    return axiosInstance({
+        url: 'GetList',
+        method: 'post',
+        data: filteringInfo
+    }).then(res => res.data)
+}
+
 const candidateService = {
-    createCandidate
+    createCandidate,
+    getCandidates
 }
 
 export default candidateService

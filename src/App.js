@@ -17,6 +17,7 @@ import CreateNewUserComponent from "./components/Admin/CreateNewUserComponent/Cr
 import AddSmtpAccount from "./components/Admin/AddSmtpAccountComponent/AddSmtpAccountComponent";
 import AddImapAccount from "./components/Admin/AddImapAccountComponent/AddImapAccountComponent";
 import UserComponent from "./components/User/UserComponent";
+import ShowCandidatesComponent from "./components/Candidate/ShowCandidatesComponent/ShowCandidatesComponent";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState("");
@@ -106,6 +107,7 @@ const App = () => {
           <Route exact path={"/candidate"} element={<CandidateComponent />} />
           <Route exact path={"/skills"} element={<SkillsComponent />} />
           <Route exact path={"/recruitments"} element={<RecruitmentsComponent/>}/>
+          <Route path={'recruitments/showCandidates/:id'} element={<ShowCandidatesComponent/>}/>
           <Route exact path={'/createRecruitment'} element={<CreateRecruitmentComponent/>}/>
           <Route exact path={"/admin"} element={<AdminComponent />} />
           <Route exact path={"/admin/createNewUser"} element={<CreateNewUserComponent />} />
