@@ -14,6 +14,7 @@ import CreateRecruitmentComponent from "./components/CreateRecruitmentComponent/
 import CandidateComponent from "./components/Candidate/CandidateComponent";
 import AdminComponent from "./components/Admin/AdminComponent";
 import CreateNewUserComponent from "./components/Admin/CreateNewUserComponent/CreateNewUserComponent";
+import ReportsComponent from "./components/ReportsComponent/ReportsComponent"
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState("");
@@ -74,6 +75,11 @@ const App = () => {
                 Skills
               </Link>
             </li>
+            <li className="nav-item">
+              <Link to={"/reports"} className="nav-link">
+                Reports
+              </Link>
+            </li>
           </div>
         ) : (
           <div className="navbar-nav ml-auto">
@@ -106,6 +112,7 @@ const App = () => {
           <Route exact path={'/createRecruitment'} element={<CreateRecruitmentComponent/>}/>
           <Route exact path={"/admin"} element={<AdminComponent/>}/>
           <Route exact path={"/admin/createNewUser"} element={<CreateNewUserComponent/>}/>
+          <Route exact path={"/reports"} element={<ReportsComponent/>}/>
         </Routes>
       </Container>
     </div>

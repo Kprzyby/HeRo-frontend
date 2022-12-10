@@ -202,7 +202,7 @@ class ShowRecruitmentDetailsComponent extends React.Component{
               Delete
             </button>
           </div>
-          :<span></span>}
+          :<span></span>}<br></br><br></br>
 
           {this.state.endClicked?
             <div>
