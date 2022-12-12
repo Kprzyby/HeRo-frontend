@@ -20,12 +20,13 @@ function deleteUser(id) {
     });
 }
 
+
 function getUsers(id) {
-    if (!id) {  //nie działa lista 
+    if (!id) {
         return api({
             url: 'GetList',
             method: 'post',
-            params: {
+            data: {
                 paging: {
                     pageSize: 10,
                     pageNumber: 1

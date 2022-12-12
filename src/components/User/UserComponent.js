@@ -29,6 +29,7 @@ class UserComponent extends React.Component {
             .then(res => {
                 this.setState({
                     users: res
+
                 });
             })
     }
@@ -39,6 +40,7 @@ class UserComponent extends React.Component {
 
 
     render() {
+        console.log(this.state.users)
         return (
             <div>
                 <Form onSubmit={this.handleGetUsers}>
@@ -57,15 +59,7 @@ class UserComponent extends React.Component {
                     <Button variant="primary" type="submit">Submit</Button>
                 </Form>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nr</th>
-                            <th>Name</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                </table>
+                {JSON.stringify(this.state.users)}
             </div>
 
         )
