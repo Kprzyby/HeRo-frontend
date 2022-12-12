@@ -1,1 +1,15 @@
-.ReportsComponent {}
+.ReportsComponent {
+    text-align: middle;
+}
+.report{
+    display: inline-block;
+    margin:10vh;
+    padding:1vh;
+}
+.orderedList{
+    list-style-position:inside;
+    text-align: left;
+}
+.listElement{
+    margin:1vh;
+}
