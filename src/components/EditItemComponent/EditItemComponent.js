@@ -4,6 +4,9 @@ import styles from './EditItemComponent.module.css';
 import userService from '../../services/user.service';
 
 function EditItemComponent(props){
+  if(props.editClicked===false && props.name==='recruiterId'){
+    return <p id={props.name}>{props.recruiters.find(e=>e.id===props.value).fullName}</p>;
+  }
   if(props.editClicked===false){
     return <p id={props.name}>{props.value}</p>;
   }
