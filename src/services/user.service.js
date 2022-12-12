@@ -20,6 +20,22 @@ function deleteUser(id) {
     });
 }
 
+function editUser(id, name, surname, userStatus, roleName) {
+    return api({
+        url: `Edit/${id}`,
+        method: 'post',
+        params: {
+            userId: id,
+            userName: name,
+            userSurname: surname,
+            userUserStatus: userStatus,
+            userRoleName: roleName
+
+        }
+    });
+}
+
+
 
 function getUsers(id) {
     if (!id) {
@@ -47,7 +63,8 @@ function getUsers(id) {
 
 const userService = {
     getUsers,
-    deleteUser
+    deleteUser,
+    editUser
 }
 
 export default userService
