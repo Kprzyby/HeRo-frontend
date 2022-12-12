@@ -66,6 +66,8 @@ class ManageSkillsComponent extends React.Component{
     const skillsAvailable=this.state.skillsAvailable;
     skillsAvailable.push(value);
 
+    this.props.changeSkills(skillsUsed);
+
     this.setState({
       skillsUsed:skillsUsed,
       skillsAvailable:skillsAvailable
