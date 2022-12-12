@@ -16,6 +16,8 @@ const formSchema=yup.object().shape({
   localization:yup.string().required('This field is required'),
   begginingDate:yup.date().typeError('This field is required').required('This field is required'),
   endingDate:yup.date().typeError('This field is required').required('This field is required'),
+  recruiterId:yup.number().required('This field is required'),
+  seniority:yup.string().required('This field is required'),
   skills:yup.array().of(
     yup.object({
       skillLevel:yup.number().typeError('You have to rate all the skills')
@@ -43,6 +45,8 @@ class CreateRecruitmentComponent extends React.Component{
       nameErrors:[],
       descriptionErrors:[],
       recruitmentPositionErrors:[],
+      seniorityErrors:[],
+      recruiterIdErrors:[],
       localizationErrors:[],
       skillsErrors:[],
       isFormValid:false
@@ -154,6 +158,8 @@ class CreateRecruitmentComponent extends React.Component{
     const nameErrors=[];
     const descriptionErrors=[];
     const recruitmentPositionErrors=[];
+    const recruiterIdErrors=[];
+    const seniorityErrors=[];
     const localizationErrors=[];
     const skillsErrors=[];
     
@@ -165,6 +171,8 @@ class CreateRecruitmentComponent extends React.Component{
       name:this.state.name,
       description:this.state.description,
       recruitmentPosition:this.state.recruitmentPosition,
+      recruiterId:this.state.recruiterId,
+      seniority:this.state.seniority,
       localization:this.state.localization,
       skills:this.state.skills,
     },{abortEarly:false})
@@ -196,6 +204,12 @@ class CreateRecruitmentComponent extends React.Component{
           else if(f.path==='localization'){
             localizationErrors.push(errorMessage);
           }
+          else if(f.path==='recruiterId'){
+            recruiterIdErrors.push(errorMessage);
+          }
+          else if(f.path==='seniority'){
+            seniorityErrors.push(errorMessage);
+          }
           else{
             skillsErrors.push(errorMessage);
           }
@@ -208,6 +222,8 @@ class CreateRecruitmentComponent extends React.Component{
           descriptionErrors:descriptionErrors,
           recruitmentPositionErrors:recruitmentPositionErrors,
           localizationErrors:localizationErrors,
+          recruiterIdErrors:recruiterIdErrors,
+          seniorityErrors:seniorityErrors,
           skillsErrors:skillsErrors,
           isFormValid:isFormValid
         });
@@ -259,12 +275,14 @@ class CreateRecruitmentComponent extends React.Component{
           <option value='mid/senior'>mid/senior</option>
           <option value='senior'>senior</option>
         </select>
+        <ShowValidationErrorsComponent errorMessages={this.state.seniorityErrors}></ShowValidationErrorsComponent>
         <br></br><br></br>
 
         <label htmlFor='recruiter'>Assing a recruiter from the list</label><br></br>
         <select id='recruiter' name='recruiterId' onChange={this.handleInputChange}>
           {this.state.recruiters.map(e=><option key={e.id} value={e.id}>{e.fullName}</option>)}
         </select>
+        <ShowValidationErrorsComponent errorMessages={this.state.recruiterIdErrors}></ShowValidationErrorsComponent>
         <br></br><br></br>
 
         <ManageSkillsComponent changeSkills={this.changeSkills}></ManageSkillsComponent>

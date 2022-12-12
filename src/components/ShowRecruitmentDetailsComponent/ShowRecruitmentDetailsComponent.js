@@ -12,6 +12,24 @@ import ManageSkillsComponent from '../ManageSkillsComponent/ManageSkillsComponen
 import skillService from '../../services/skill.service';
 import { Rating } from '@mui/material';
 import { Button } from 'react-bootstrap';
+import * as yup from 'yup';
+import ShowValidationErrorsComponent from '../ShowValidationErrorsComponent/ShowValidationErrorsComponent';
+
+const formSchema=yup.object().shape({
+  name:yup.string().required('This field is required'),
+  describtion:yup.string().required('This field is required'),
+  position:yup.string().required('This field is required'),
+  localization:yup.string().required('This field is required'),
+  beginningDate:yup.date().typeError('This field is required').required('This field is required'),
+  endingDate:yup.date().typeError('This field is required').required('This field is required'),
+  recruiterId:yup.number().required('This field is required'),
+  seniority:yup.string().required('This field is required'),
+  skills:yup.array().of(
+    yup.object({
+      skillLevel:yup.number().typeError('You have to rate all the skills')
+    })
+  ).min(1, 'You have to specify at least one skill')
+});
 
 class ShowRecruitmentDetailsComponent extends React.Component{
   constructor(props){
@@ -28,6 +46,18 @@ class ShowRecruitmentDetailsComponent extends React.Component{
       localization:'',
       seniority:'',
       skills:[],
+
+      beginningDateErrors:[],
+      endingDateErrors:[],
+      nameErrors:[],
+      describtionErrors:[],
+      positionErrors:[],
+      recruiterIdErrors:[],
+      seniorityErrors:[],
+      localizationErrors:[],
+      skillsErrors:[],
+      isFormValid:false,
+
       editClicked:false,
       endClicked:false,
       deleteClicked:false,
@@ -77,13 +107,45 @@ class ShowRecruitmentDetailsComponent extends React.Component{
     });
   }
 
-  handleInputChange(e){
+  async handleInputChange(e){
+    const name=e.target.name;
+    const value=e.target.value;
+
+    let errors=[];
+
+    await yup.reach(formSchema, name).validate(value)
+      .catch(err=>{
+
+        const error={
+          id:0,
+          message:err.message
+        };
+
+        errors.push(error);
+    });
+
     this.setState({
-      [e.target.name]:e.target.value
+      [name]:value,
+      [name+'Errors']:errors,
     });
   }
-  changeSkills(skills){
+  
+  async changeSkills(skills){
+    let errors=[];
+
+    await yup.reach(formSchema, 'skills').validate(skills)
+    .catch(err=>{
+      
+      const error={
+        id:0,
+        message:err.message
+      };
+
+      errors.push(error);
+    });
+
     this.setState({
+      skillsErrors:errors,
       skills:skills
     });
   }
@@ -115,59 +177,142 @@ class ShowRecruitmentDetailsComponent extends React.Component{
       }
     });
   }
-  editRecruitment(e){
+  async editRecruitment(e){
     e.preventDefault();
 
-    const skills=this.state.skills.map(e=>{
-      return({
-        skillId:e.id,
-        skillLevel:e.skillLevel
+    const isFormValid=await this.validateForm();
+
+    if(isFormValid){
+
+      const skills=this.state.skills.map(e=>{
+        return({
+          skillId:e.id,
+          skillLevel:e.skillLevel
+        })
       })
+  
+      const recruitmentInfo={
+        id:this.state.id,
+        beginningDate: this.state.beginningDate,
+        endingDate: this.state.endingDate,
+        name: this.state.name,
+        description: this.state.describtion,
+        recruiterId: this.state.recruiterId,
+        recruitmentPosition: this.state.position,
+        localization: this.state.localization,
+        seniority: this.state.seniority,
+        skills: skills
+      };
+  
+      recruitmentService.editRecruitment(recruitmentInfo)
+        .then(res=>{
+          recruitmentService.getRecruitment(this.props.recruitmentId)
+          .then(res=>{
+            console.log(res);
+            const skills=res.skills.map(e=>{
+              return({
+                id:e.skillId,
+                name:e.name,
+                skillLevel:e.skillLevel
+              })
+            })
+  
+            this.setState({
+              id:res.id,
+              recruiterId:res.recruiterId,
+              beginningDate:res.beginningDate,
+              endingDate:res.endingDate,
+              name:res.name,
+              describtion:res.description,
+              position:res.recruitmentPosition,
+              localization:res.localization,
+              seniority:res.seniority,
+              skills:skills,
+              editClicked:false 
+            });
+          });
+        })
+  
+      this.props.updateRecruitment(this.state.id);
+    }
+  }
+
+  async validateForm(){
+    const beginningDateErrors=[];
+    const endingDateErrors=[];
+    const nameErrors=[];
+    const describtionErrors=[];
+    const positionErrors=[];
+    const recruiterIdErrors=[];
+    const seniorityErrors=[];
+    const localizationErrors=[];
+    const skillsErrors=[];
+    
+    let isFormValid=true;
+
+    await formSchema.validate({
+      beginningDate:this.state.beginningDate,
+      endingDate:this.state.endingDate,
+      name:this.state.name,
+      describtion:this.state.describtion,
+      position:this.state.position,
+      recruiterId:this.state.recruiterId,
+      seniority:this.state.seniority,
+      localization:this.state.localization,
+      skills:this.state.skills,
+    },{abortEarly:false})
+    .catch(err=>{
+      isFormValid=false;
+
+      err.inner.forEach((f, index)=>{
+        const errorMessage={
+          id:index,
+          message:f.message
+        };
+  
+        if(f.path==='beginningDate'){
+          beginningDateErrors.push(errorMessage);
+        }
+        else if(f.path==='endingDate'){
+          endingDateErrors.push(errorMessage);
+        }
+        else if(f.path==='name'){
+          nameErrors.push(errorMessage);
+        }
+        else if(f.path==='describtion'){
+          describtionErrors.push(errorMessage);
+        }
+        else if(f.path==='position'){
+          positionErrors.push(errorMessage);
+        }
+        else if(f.path==='localization'){
+          localizationErrors.push(errorMessage);
+        }
+        else if(f.path==='recruiterId'){
+          recruiterIdErrors.push(errorMessage);
+        }
+        else if(f.path==='seniority'){
+          seniorityErrors.push(errorMessage);
+        }
+        else{
+          skillsErrors.push(errorMessage);
+        }
+      });
+  
+      this.setState({
+        beginningDateErrors:beginningDateErrors,
+        endingDateErrors:endingDateErrors,
+        nameErrors:nameErrors,
+        describtionErrors:describtionErrors,
+        positionErrors:positionErrors,
+        localizationErrors:localizationErrors,
+        recruiterIdErrors:recruiterIdErrors,
+        seniorityErrors:seniorityErrors,
+        skillsErrors:skillsErrors,
+      });
     })
 
-    const recruitmentInfo={
-      id:this.state.id,
-      beginningDate: this.state.beginningDate,
-      endingDate: this.state.endingDate,
-      name: this.state.name,
-      description: this.state.describtion,
-      recruiterId: this.state.recruiterId,
-      recruitmentPosition: this.state.position,
-      localization: this.state.localization,
-      seniority: this.state.seniority,
-      skills: skills
-    };
-
-    recruitmentService.editRecruitment(recruitmentInfo)
-      .then(res=>{
-        recruitmentService.getRecruitment(this.props.recruitmentId)
-        .then(res=>{
-          console.log(res);
-          const skills=res.skills.map(e=>{
-            return({
-              id:e.skillId,
-              name:e.name,
-              skillLevel:e.skillLevel
-            })
-          })
-
-          this.setState({
-            id:res.id,
-            recruiterId:res.recruiterId,
-            beginningDate:res.beginningDate,
-            endingDate:res.endingDate,
-            name:res.name,
-            describtion:res.description,
-            position:res.recruitmentPosition,
-            localization:res.localization,
-            seniority:res.seniority,
-            skills:skills,
-            editClicked:false 
-          });
-        });
-      })
-
-      this.props.updateRecruitment(this.state.id);
+    return isFormValid;
   }
   endRecruitment(e){
     this.toggleEndClicked(e);
@@ -223,31 +368,39 @@ class ShowRecruitmentDetailsComponent extends React.Component{
           <form onSubmit={this.editRecruitment}>
             <label htmlFor='name'>Name:</label>
             <EditItemComponent editClicked={this.state.editClicked} name='name' type='text' value={this.state.name} handleInputChange={this.handleInputChange}></EditItemComponent>
+            <ShowValidationErrorsComponent errorMessages={this.state.nameErrors}></ShowValidationErrorsComponent>
 
             <label htmlFor='describtion'>Job describtion:</label><br></br>
             <EditItemComponent editClicked={this.state.editClicked} name='describtion' type='textarea' value={this.state.describtion} handleInputChange={this.handleInputChange}></EditItemComponent>
+            <ShowValidationErrorsComponent errorMessages={this.state.describtionErrors}></ShowValidationErrorsComponent>
 
             <label htmlFor='beginningDate'>Beginning date:</label>
             <EditItemComponent editClicked={this.state.editClicked} name='beginningDate' type='date' value={this.state.beginningDate} handleInputChange={this.handleInputChange}></EditItemComponent>
+            <ShowValidationErrorsComponent errorMessages={this.state.beginningDateErrors}></ShowValidationErrorsComponent>
 
             <label htmlFor='endingDate'>Ending date:</label>
             <EditItemComponent editClicked={this.state.editClicked} name='endingDate' type='date' value={this.state.endingDate} handleInputChange={this.handleInputChange}></EditItemComponent>
+            <ShowValidationErrorsComponent errorMessages={this.state.endingDateErrors}></ShowValidationErrorsComponent>
 
             <label htmlFor='position'>Position:</label>
             <EditItemComponent editClicked={this.state.editClicked} name='position' type='text' value={this.state.position} handleInputChange={this.handleInputChange}></EditItemComponent>
+            <ShowValidationErrorsComponent errorMessages={this.state.positionErrors}></ShowValidationErrorsComponent>
 
             <label htmlFor='seniority'>Seniority:</label>
             <EditItemComponent editClicked={this.state.editClicked} name='seniority' type='select' value={this.state.seniority} handleInputChange={this.handleInputChange}></EditItemComponent>
+            <ShowValidationErrorsComponent errorMessages={this.state.seniorityErrors}></ShowValidationErrorsComponent>
 
             {user?
             <div>
               <label htmlFor='recruiterId'>Assigned recruiter:</label>
               <EditItemComponent editClicked={this.state.editClicked} name='recruiterId' type='select' value={this.state.recruiterId} handleInputChange={this.handleInputChange} recruiters={this.state.recruiters}></EditItemComponent>
+              <ShowValidationErrorsComponent errorMessages={this.state.recruiterIdErrors}></ShowValidationErrorsComponent>
             </div>
             :<p></p>}
 
             <label htmlFor='localization'>Localization:</label>
             <EditItemComponent editClicked={this.state.editClicked} name='localization' type='text' value={this.state.localization} handleInputChange={this.handleInputChange}></EditItemComponent>
+            <ShowValidationErrorsComponent errorMessages={this.state.localizationErrors}></ShowValidationErrorsComponent>
 
             {this.state.editClicked?
             <ManageSkillsComponent skillsUsed={this.state.skills} changeSkills={this.changeSkills}></ManageSkillsComponent>
@@ -260,6 +413,7 @@ class ShowRecruitmentDetailsComponent extends React.Component{
                 </li>)}
               </ul>
             </div>}
+            <ShowValidationErrorsComponent errorMessages={this.state.skillsErrors}></ShowValidationErrorsComponent>
 
             {this.state.editClicked?
             <Button type='submit' variant='primary'>Done!</Button>
