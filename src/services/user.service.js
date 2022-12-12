@@ -19,6 +19,13 @@ function deleteUser(id) {
         }
     });
 }
+function getRecruiters(){
+    return api({
+        url:'GetRecruiters',
+        method:'post'
+    })
+    .then(res=>res.data);
+}
 
 function editUser(id, name, surname, userStatus, roleName) {
     return api({
@@ -64,7 +71,8 @@ function getUsers(id) {
 const userService = {
     getUsers,
     deleteUser,
-    editUser
+    editUser,
+    getRecruiters
 }
 
 export default userService
