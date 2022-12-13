@@ -4,41 +4,57 @@ import styles from './EditItemComponent.module.css';
 import userService from '../../services/user.service';
 
 function EditItemComponent(props){
+  if(props.editClicked===false && props.name==='recruiterId'){
+    return <p id={props.name}>{props.recruiters.find(e=>e.id===props.value).fullName}</p>;
+  }
   if(props.editClicked===false){
     return <p id={props.name}>{props.value}</p>;
   }
   else{
     if(props.type==='text'){
-      return <input type='text' id={props.name} name={props.name} value={props.value} onChange={props.handleInputChange}></input>
+      return(
+        <div>
+          <input type='text' id={props.name} name={props.name} value={props.value} onChange={e=>props.handleInputChange(e)}></input>
+          <br></br>
+        </div>)
     }
     if(props.type==='date'){
-      return <input type='date' id={props.name} name={props.name} value={props.value} onChange={props.handleInputChange}></input>   
-    }
-    if(props.type==='select' && props.name==='recruiterId'){
-      let recruiters;
-      
-      userService.getRecruiters()
-      .then(res=>recruiters=res);
-
       return(
-        <select id={props.name} name={props.name} value={props.value} onChange={props.handleInputChange}>
-          {recruiters.map(e=><option key={e.id} value={e.id}>{e.fullName}</option>)}
-        </select>
-      )
+      <div>
+        <input type='datetime-local' id={props.name} name={props.name} value={props.value} onChange={e=>props.handleInputChange(e)}></input>
+        <br></br>
+      </div>)   
     }
+    if(props.type==='select' && props.name==='recruiterId'){         
+        return(
+          <div>
+            <select id={props.name} name={props.name} value={props.value} onChange={e=>props.handleInputChange(e)}>
+              {props.recruiters.map(e=><option key={e.id} value={e.id}>{e.fullName}</option>)}
+            </select>
+            <br></br>
+          </div>
+        )
+      }
     if(props.type==='select' && props.name==='seniority'){
       return(
-        <select id={props.name} name={props.name} value={props.value} onChange={props.handleInputChange}>
-          <option value='junior'>junior</option>
-          <option value='junior/mid'>junior/mid</option>
-          <option value='mid'>mid</option>
-          <option value='mid/senior'>mid/senior</option>
-          <option value='senior'>senior</option>
-        </select>
+        <div>
+          <select id={props.name} name={props.name} value={props.value} onChange={e=>props.handleInputChange(e)}>
+            <option value='junior'>junior</option>
+            <option value='junior/mid'>junior/mid</option>
+            <option value='mid'>mid</option>
+            <option value='mid/senior'>mid/senior</option>
+            <option value='senior'>senior</option>
+          </select>
+          <br></br>
+        </div>
       )
     }
     if(props.type==='textarea'){
-      return <textarea id={props.name} defaultValue={props.value} name={props.name} onChange={props.handleInputChange}></textarea>
+      return(
+      <div>
+        <textarea id={props.name} defaultValue={props.value} name={props.name} onChange={e=>props.handleInputChange(e)}></textarea>
+        <br></br>
+      </div>)
     }
   }
 };
@@ -48,7 +64,8 @@ EditItemComponent.propTypes = {
   name:PropTypes.string,
   value:PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   editClicked:PropTypes.bool,
-  handleInputChange:PropTypes.func
+  handleInputChange:PropTypes.func,
+  recruiters:PropTypes.array
 };
 
 EditItemComponent.defaultProps = {};

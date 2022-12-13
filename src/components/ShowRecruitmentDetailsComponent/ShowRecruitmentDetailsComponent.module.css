@@ -1,7 +1,10 @@
 .ShowRecruitmentDetailsComponent {
-    float:right;
+    padding:1vh;
+    position:absolute;
+    left:70vh;
     border:solid black thin;
     background-color: lightskyblue;
+    width:50vh;
 }
 label{
     font-weight: bold;
