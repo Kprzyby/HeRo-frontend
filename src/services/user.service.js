@@ -13,36 +13,37 @@ const api = axios.create({
 function deleteUser(id) {
     return api({
         url: `Delete/${id}`,
-        method: 'delete',
-        params: {
-            userId: id
-        }
-    });
-}
-function getRecruiters(){
-    return api({
-        url:'GetRecruiters',
-        method:'post'
-    })
-    .then(res=>res.data);
+        method: 'delete'
+    }).then(res => res.data)
 }
 
-function editUser(id, name, surname, userStatus, roleName) {
+function getRecruiters() {
+    return api({
+        url: 'GetRecruiters',
+        method: 'post'
+    }).then(res => res.data);
+}
+
+function getTechnicians() {
+    return api({
+        url: 'GetTechnicians',
+        method: 'post'
+    }).then(res => res.data);
+}
+
+
+function editUser(id, _name, _surname, _userStatus, _roleName) {
     return api({
         url: `Edit/${id}`,
         method: 'post',
-        params: {
-            userId: id,
-            userName: name,
-            userSurname: surname,
-            userUserStatus: userStatus,
-            userRoleName: roleName
-
+        data: {
+            name: _name,
+            surname: _surname,
+            userStatus: _userStatus,
+            roleName: _roleName
         }
     });
 }
-
-
 
 function getUsers(id) {
     if (!id) {
@@ -72,7 +73,8 @@ const userService = {
     getUsers,
     deleteUser,
     editUser,
-    getRecruiters
+    getRecruiters,
+    getTechnicians
 }
 
 export default userService

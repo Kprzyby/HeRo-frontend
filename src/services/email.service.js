@@ -1,10 +1,10 @@
 import axios from "axios"
 
-const API_URL = "https://localhost:7210/Email"
 
 axios.defaults.withCredentials = true
 
 const api = axios.create({
+    baseURL: 'https://localhost:7210/Email/',
     responseType: 'json',
     timeout: 10000,
     headers: {
@@ -16,8 +16,8 @@ const api = axios.create({
     }
 })
 
-const addSmtpAccount = (port, name, login, password, sender, host) => {
-    return api.post(API_URL + '/AddSmtpAccount', {
+function addSmtpAccount(port, name, login, password, sender, host) {
+    return api.post('AddSmtpAccount', {
         port,
         name,
         login,
@@ -27,8 +27,9 @@ const addSmtpAccount = (port, name, login, password, sender, host) => {
     }).then(res => res.data)
 }
 
-const addImapAccount = (port, host, login, password) => {
-    return api.post(API_URL + '/AddImapAccount', {
+
+function addImapAccount(port, host, login, password) {
+    return api.post('AddImapAccount', {
         port,
         host,
         login,
@@ -36,9 +37,15 @@ const addImapAccount = (port, host, login, password) => {
     }).then(res => res.data)
 }
 
+function getAllPossibleSmtpAccountNames() {
+    return api.post('GetAllPossibleSmtpAccountNames').then(res => res.data)
+
+}
+
 const emailService = {
     addSmtpAccount,
-    addImapAccount
+    addImapAccount,
+    getAllPossibleSmtpAccountNames
 }
 
 export default emailService
