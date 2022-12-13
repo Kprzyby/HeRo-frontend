@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+
 function EditUserComponent(props){
   if(props.editedId===props.id){
     return(
@@ -17,7 +18,8 @@ function EditUserComponent(props){
 EditUserComponent.propTypes = {
   editedId:PropTypes.number.isRequired,
   id:PropTypes.number.isRequired,
-  name:PropTypes.string.isRequired
+  name:PropTypes.string.isRequired,
+  editItem:PropTypes.func.isRequired
 };
 
 EditUserComponent.defaultProps = {};
