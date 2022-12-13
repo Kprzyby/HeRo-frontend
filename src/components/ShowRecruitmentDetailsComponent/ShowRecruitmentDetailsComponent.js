@@ -162,7 +162,7 @@ class ShowRecruitmentDetailsComponent extends React.Component{
       editClicked:true
     });
   }
-  showCandidates(){
+  showCandidates(){}
     
   toggleEndClicked(e){
     e.stopPropagation();
