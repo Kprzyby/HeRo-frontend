@@ -1,22 +1,26 @@
 import React from "react";
+import { useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Badge, Container, ListGroup, Row } from "react-bootstrap";
+import { Badge, Container, ListGroup, Row, Tab, Tabs, Card } from "react-bootstrap";
 import Col from "react-bootstrap/Col";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import candidateService from "../../../services/candidate.service";
+import CandidateDetailsComponent from "../CandidateDetailsComponent/CandidateDetailsComponent";
 
 function ShowCandidatesComponent(props) {
     const id = useParams().id
     const [recruitmentId] = useState(id)
     const [candidatesList, setList] = useState([])
     const [selectedCandidate, setSelected] = useState(0)
+    const [candidateUpdated, setCandidateUpdated] = useState(false)
 
     useEffect(() => {
         candidateService.getCandidates(
             getFilteringInfo()
         ).then(res => {
             setList(res.candidateInfoForListDTOs)
+            setCandidateUpdated(false)
         })
 
         function getFilteringInfo() {
@@ -38,18 +42,27 @@ function ShowCandidatesComponent(props) {
             return filteringInfo
         }
 
-    }, [recruitmentId])
-    //console.log(candidatesList)
+    }, [recruitmentId, candidateUpdated])
+
+    const childToParent = (state) => {
+        if (state === 'Update')
+            setCandidateUpdated(true)
+        else if (state === 'Delete')
+        {
+            setSelected(0)
+            setCandidateUpdated(true)
+        }
+    }
 
     function handleClick(e, id) {
         selectedCandidate === id ? setSelected(0) : setSelected(id)
     }
 
     function getBadgeColor(status) {
-        if(status === 'NEW') return 'info'
-        else if(status === 'IN_PROCESSING') return 'warning'
-        else if(status === 'DROPPED_OUT') return 'danger'
-        else if(status === 'HIREd') return 'success'
+        if (status === 'NEW') return 'info'
+        else if (status === 'IN_PROCESSING') return 'warning'
+        else if (status === 'DROPPED_OUT') return 'danger'
+        else if (status === 'HIRED') return 'success'
     }
 
     return (
@@ -83,12 +96,9 @@ function ShowCandidatesComponent(props) {
                 </Col>
                 {selectedCandidate === 0
                     ? '' :
-                    <Col>
-                        <p></p>
-                    </Col>}
+                    <CandidateDetailsComponent childToParent={childToParent} candidate={candidatesList.find(c => c.id === selectedCandidate)} />
+                }
             </Row>
-
-
         </Container>
 
     )
