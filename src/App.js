@@ -18,6 +18,7 @@ import ReportsComponent from "./components/ReportsComponent/ReportsComponent"
 import AddSmtpAccount from "./components/Admin/AddSmtpAccountComponent/AddSmtpAccountComponent";
 import AddImapAccount from "./components/Admin/AddImapAccountComponent/AddImapAccountComponent";
 import UserComponent from "./components/User/UserComponent";
+import ShowCandidatesComponent from "./components/Candidate/ShowCandidatesComponent/ShowCandidatesComponent";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState("");
@@ -69,11 +70,6 @@ const App = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to={"/candidate"} className="nav-link">
-                Candidate
-              </Link>
-            </li>
-            <li className="nav-item">
               <Link to={"/skills"} className="nav-link">
                 Skills
               </Link>
@@ -117,6 +113,7 @@ const App = () => {
           <Route exact path={"/candidate"} element={<CandidateComponent />} />
           <Route exact path={"/skills"} element={<SkillsComponent />} />
           <Route exact path={"/recruitments"} element={<RecruitmentsComponent/>}/>
+          <Route path={'recruitments/showCandidates/:id'} element={<ShowCandidatesComponent/>}/>
           <Route exact path={'/createRecruitment'} element={<CreateRecruitmentComponent/>}/>
           <Route exact path={"/reports"} element={<ReportsComponent/>}/>
           <Route exact path={"/admin"} element={<AdminComponent />} />

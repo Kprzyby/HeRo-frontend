@@ -1,0 +1,5 @@
+.btnAlign {
+    /* Since your button is a block button, otherwise use inline-flex */
+    display: flex;
+    align-items: center;
+  }

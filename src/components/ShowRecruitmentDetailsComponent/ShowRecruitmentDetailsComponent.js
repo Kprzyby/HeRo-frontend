@@ -5,12 +5,14 @@ import recruitmentService from '../../services/recruitment.service';
 import { PencilSquare } from 'react-bootstrap-icons';
 import { XLg } from 'react-bootstrap-icons';
 import { Trash } from 'react-bootstrap-icons';
+import { PersonLinesFill } from 'react-bootstrap-icons';
 import userService from '../../services/user.service';
 import AuthService from '../../services/auth.service';
 import EditItemComponent from '../EditItemComponent/EditItemComponent';
 import ManageSkillsComponent from '../ManageSkillsComponent/ManageSkillsComponent';
 import skillService from '../../services/skill.service';
 import { Rating } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import * as yup from 'yup';
 import ShowValidationErrorsComponent from '../ShowValidationErrorsComponent/ShowValidationErrorsComponent';
@@ -67,6 +69,7 @@ class ShowRecruitmentDetailsComponent extends React.Component{
     this.handleInputChange=this.handleInputChange.bind(this);
     this.changeSkills=this.changeSkills.bind(this);
     this.setEditClicked=this.setEditClicked.bind(this);
+    this.showCandidates = this.showCandidates.bind(this);
     this.toggleEndClicked=this.toggleEndClicked.bind(this);
     this.toggleDeleteClicked=this.toggleDeleteClicked.bind(this);
     this.editRecruitment=this.editRecruitment.bind(this);
@@ -159,6 +162,8 @@ class ShowRecruitmentDetailsComponent extends React.Component{
       editClicked:true
     });
   }
+  showCandidates(){
+    
   toggleEndClicked(e){
     e.stopPropagation();
 
@@ -346,6 +351,10 @@ class ShowRecruitmentDetailsComponent extends React.Component{
               <Trash></Trash>&nbsp;
               Delete
             </button>
+            <Link className='btn btn-info' to={{pathname: `showCandidates/${this.state.id}`}}>
+              <PersonLinesFill/>&nbsp;
+              Candidates
+            </Link>
           </div>
           :<span></span>}<br></br><br></br>
 
