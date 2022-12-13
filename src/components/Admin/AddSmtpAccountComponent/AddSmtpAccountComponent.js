@@ -2,12 +2,14 @@ import React from "react";
 import { Form } from "react-bootstrap";
 import { Button } from 'react-bootstrap'
 import emailService from "../../../services/email.service";
+import SmptComponent from "./SmptComponent";
 
 class AddSmtpAccountComponent extends React.Component {
     constructor(props) {
         super(props)
 
         this.state = {
+            possibleNames: [],
             port: "",
             name: "",
             login: "",
@@ -23,6 +25,14 @@ class AddSmtpAccountComponent extends React.Component {
         this.handlePasswordChange = this.handlePasswordChange.bind(this)
         this.handleSenderChange = this.handleSenderChange.bind(this)
         this.handleHostChange = this.handleHostChange.bind(this)
+        this.handleInputChange = this.handleInputChange.bind(this)
+    }
+    componentDidMount() {
+        emailService.getAllPossibleSmtpAccountNames().then(res => {
+            this.setState({
+                possibleNames: res
+            })
+        })
     }
     handlePortChange(e) {
         this.setState({
@@ -54,6 +64,14 @@ class AddSmtpAccountComponent extends React.Component {
             host: e.target.value
         })
     }
+    async handleInputChange(e) {
+        const name = e.target.name;
+        const value = e.target.value;
+        this.setState({
+            [name]: value
+        });
+        console.log(this.state.name)
+    }
 
     handleSubmit(e) {
         e.preventDefault()
@@ -77,7 +95,7 @@ class AddSmtpAccountComponent extends React.Component {
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Name</Form.Label>
-                    <Form.Control type="text" onChange={this.handleNameChange}></Form.Control>
+                    <SmptComponent name='name' type='select' value={this.state.possibleNames} handleNameChange={this.handleNameChange}></SmptComponent>
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Login</Form.Label>

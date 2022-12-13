@@ -30,15 +30,14 @@ function getInterviewList() {
         }
     }).then(res => res.data);
 }
-function createInterview(data, cId, wId, typ) {
+function createInterview(candidateId, workerId) {
     return api({
         url: 'Create',
         method: 'post',
         data: {
-            date: data,
-            candidateId: cId,
-            workerId: wId,
-            type: typ
+            candidateId: candidateId,
+            workerId: workerId,
+            type: "tech_interview"
         }
     }).then(res => res.data);
 }
