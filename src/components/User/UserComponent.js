@@ -1,9 +1,12 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap'
 import userService from "../../services/user.service";
 import { PencilSquare } from 'react-bootstrap-icons';
 import { Trash } from 'react-bootstrap-icons'
-import EditUserComponent from './EditUserComponent';
+import EditUserStatusComponent from './EditUser/EditUserStatusComponent';
+import EditRoleNameComponent from './EditUser/EditRoleNameComponent';
+import EditNameComponent from './EditUser/EditNameComponent';
 class UserComponent extends React.Component {
     constructor(props) {
         super(props)
@@ -15,8 +18,11 @@ class UserComponent extends React.Component {
 
         this.handleGetUsers = this.handleGetUsers.bind(this)
         this.handleDeleteUser = this.handleDeleteUser.bind(this)
-        this.editUser = this.editUser.bind(this);
+        this.editStatus = this.editStatus.bind(this);
         this.setEditedId = this.setEditedId.bind(this)
+        this.editRole = this.editRole.bind(this)
+        this.editName = this.editName.bind(this)
+        
     }
     handleGetUsers(e) {
         e.preventDefault()
@@ -56,17 +62,79 @@ class UserComponent extends React.Component {
         })
 
     }
-    editUser(event) {
+    editStatus(fullName, event, email, roleName) {
         if (event.key === 'Enter') {
             event.preventDefault();
+            const words = fullName.split(' ')
 
-            userService.editUser(this.state.editedId, event.target.value)
+            userService.editUser(this.state.editedId, words[0], words[1], event.target.value, roleName)
                 .then(res => {
                     const users = this.state.users.map((e) => {
                         if (e.id === this.state.editedId) {
                             return {
                                 id: e.id,
-                                name: event.target.value
+                                email: email,
+                                fullName: fullName,
+                                userStatus: event.target.value,
+                                roleName: roleName
+                            }
+                        }
+                        else {
+                            return e;
+                        }
+                    })
+
+                    this.setState({
+                        users: users,
+                        editedId: -1
+                    })
+                })
+        }
+    }
+    editRole(fullName, userStatus, email, event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const words = fullName.split(' ')
+
+            userService.editUser(this.state.editedId, words[0], words[1], userStatus, event.target.value)
+                .then(res => {
+                    const users = this.state.users.map((e) => {
+                        if (e.id === this.state.editedId) {
+                            return {
+                                id: e.id,
+                                email: email,
+                                fullName: fullName,
+                                userStatus: userStatus,
+                                roleName: event.target.value,
+                            }
+                        }
+                        else {
+                            return e;
+                        }
+                    })
+
+                    this.setState({
+                        users: users,
+                        editedId: -1
+                    })
+                })
+        }
+    }
+    editName(event, userStatus, email, roleName) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const words = event.target.value.split(' ')
+
+            userService.editUser(this.state.editedId, words[0], words[1], userStatus, roleName)
+                .then(res => {
+                    const users = this.state.users.map((e) => {
+                        if (e.id === this.state.editedId) {
+                            return {
+                                id: e.id,
+                                email: email,
+                                fullName: event.target.value,
+                                userStatus: userStatus,
+                                roleName: roleName,
                             }
                         }
                         else {
@@ -83,7 +151,6 @@ class UserComponent extends React.Component {
     }
 
     render() {
-        console.log(this.state.users)
         return (
             <div>
                 <table>
@@ -103,19 +170,19 @@ class UserComponent extends React.Component {
                             return (
                                 <tr key={u.id}>
                                     <td>
-                                       {u.id}
+                                        {u.id}
                                     </td>
                                     <td>
-                                        <EditUserComponent name={u.fullName} editedId={this.state.editedId} id={u.id} editItem={this.editUser}></EditUserComponent>
+                                        <EditNameComponent name={u.fullName} userStatus={u.userStatus} email={u.email} roleName={u.roleName} editedId={this.state.editedId} id={u.id} editName={this.editName}></EditNameComponent>
                                     </td>
                                     <td>
-                                        <EditUserComponent name={u.email} editedId={this.state.editedId} id={u.id} editItem={this.editUser}></EditUserComponent>
+                                        {u.email}
                                     </td>
                                     <td>
-                                        <EditUserComponent name={u.userStatus} editedId={this.state.editedId} id={u.id} editItem={this.editUser}></EditUserComponent>
+                                        <EditUserStatusComponent name={u.fullName} userStatus={u.userStatus} email={u.email} roleName={u.roleName} editedId={this.state.editedId} id={u.id} editStatus={this.editStatus}></EditUserStatusComponent>
                                     </td>
                                     <td>
-                                        <EditUserComponent name={u.roleName} editedId={this.state.editedId} id={u.id} editItem={this.editUser}></EditUserComponent>
+                                        <EditRoleNameComponent name={u.fullName} userStatus={u.userStatus} email={u.email} roleName={u.roleName} editedId={this.state.editedId} id={u.id} editRole={this.editRole}></EditRoleNameComponent>
                                     </td>
                                     <td>
                                         <Button variant="success" onClick={(event) => this.setEditedId(event, u.id)}>
@@ -136,4 +203,8 @@ class UserComponent extends React.Component {
         )
     }
 }
+UserComponent.propTypes = {};
+
+UserComponent.defaultProps = {};
+
 export default UserComponent
