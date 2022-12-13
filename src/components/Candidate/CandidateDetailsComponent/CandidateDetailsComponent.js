@@ -2,8 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from './CandidateDetailsComponent.module.css'
 import { Col, Badge, Container, ListGroup, Row, Tab, Tabs, Card, Form, Button } from "react-bootstrap";
-import { FileEarmarkText, XSquare, PencilSquare, CheckSquare} from 'react-bootstrap-icons';
+import { FileEarmarkText, XSquare, PencilSquare, CheckSquare } from 'react-bootstrap-icons';
 import candidateService from "../../../services/candidate.service";
+import interviewService from "../../../services/interview.service";
+import userService from "../../../services/user.service";
 
 class CandidateDetailsComponent extends React.Component {
     constructor(props) {
@@ -13,6 +15,7 @@ class CandidateDetailsComponent extends React.Component {
             candidateData: props.candidate,
             statusList: [],
             stageList: [],
+            recruiters: [],
             availableFrom: '',
             email: '',
             expectedMonthlySalary: 0,
@@ -39,6 +42,7 @@ class CandidateDetailsComponent extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.deleteCandidate = this.deleteCandidate.bind(this)
+        this.createInterview = this.createInterview.bind(this)
     }
 
     componentDidMount() {
@@ -51,6 +55,11 @@ class CandidateDetailsComponent extends React.Component {
         candidateService.getStatusList().then(res => {
             this.setState({
                 statusList: res
+            })
+        })
+        userService.getRecruiters().then(res => {
+            this.setState({
+                recruiters: res
             })
         })
     }
@@ -118,9 +127,13 @@ class CandidateDetailsComponent extends React.Component {
     }
     deleteCandidate() {
         candidateService.deleteCandidate(this.state.candidateData.id)
-        .then(res => {
-            this.props.childToParent('Delete')
-        })
+            .then(res => {
+                this.props.childToParent('Delete')
+            })
+    }
+    createInterview() {
+        const workerId = this.state.recruiters.find(e => e.fullName === this.state.candidateData.recruiterAssignee)
+        interviewService.createInterview(this.state.id, workerId.id)
     }
 
     render() {
@@ -142,7 +155,7 @@ class CandidateDetailsComponent extends React.Component {
                                             <p><b>Stage:</b> {this.state.candidateData.stage}</p>
                                             <p><b>Recruiter:</b> {this.state.candidateData.recruiterAssignee}</p>
                                             <p><b>Technician:</b> {this.state.candidateData.techAssignee === ' ' ? 'None' : this.state.candidateData.techAssignee}</p>
-                                            <div className='d-flex'><b className='me-2'>CV:</b> <Button className={styles.btnAlign} variant='success' onClick={this.fetchCV}><FileEarmarkText className='me-1'/>View</Button></div>
+                                            <div className='d-flex'><b className='me-2'>CV:</b> <Button className={styles.btnAlign} variant='success' onClick={this.fetchCV}><FileEarmarkText className='me-1' />View</Button></div>
                                         </Col>
                                         <Col>
                                             <p><b>Expected salary:</b> {this.state.expectedMonthlySalary}</p>
@@ -157,7 +170,7 @@ class CandidateDetailsComponent extends React.Component {
                             <Tab eventKey='edit' title='Edit'>
                                 <Card.Text as='div' className='mt-4 text-start'>
                                     <Form onSubmit={this.handleSubmit}>
-                                    <input name='candidateId' type='hidden' value={this.state.candidateData.id}></input>
+                                        <input name='candidateId' type='hidden' value={this.state.candidateData.id}></input>
                                         <Row>
                                             <Col>
                                                 <Form.Group className='mb-3'>
@@ -278,15 +291,17 @@ class CandidateDetailsComponent extends React.Component {
                                             <Form.Control name='CV' type='file' disabled={this.state.editDataFlag} accept='.pdf'></Form.Control>
                                         </Form.Group>
                                         <div className='d-grid gap-2 d-md-flex'>
-                                            <Button className={styles.btnAlign} variant='success' type='submit'><CheckSquare className='me-1'/>Save</Button>
-                                            <Button className={styles.btnAlign} onClick={this.enableEdit}><PencilSquare className='me-1'/>Edit</Button>
+                                            <Button className={styles.btnAlign} variant='success' type='submit'><CheckSquare className='me-1' />Save</Button>
+                                            <Button className={styles.btnAlign} onClick={this.enableEdit}><PencilSquare className='me-1' />Edit</Button>
                                         </div>
                                     </Form>
                                 </Card.Text>
                             </Tab>
                             <Tab eventKey='manage' title='Manage'>
                                 <Card.Text as='div' className='mt-4 text-start'>
-                                    <Button onClick={this.deleteCandidate} variant='danger' className={styles.btnAlign}><XSquare className='me-1'/>Delete</Button>
+                                    <Button onClick={this.createInterview} variant='success' className={styles.btnAlign}><XSquare className='me-1' />Create interview</Button>
+                                    <br></br>
+                                    <Button onClick={this.deleteCandidate} variant='danger' className={styles.btnAlign}><XSquare className='me-1' />Delete</Button>
                                 </Card.Text>
                             </Tab>
                         </Tabs>
