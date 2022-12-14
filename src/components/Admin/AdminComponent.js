@@ -14,6 +14,8 @@ class AdminComponent extends React.Component {
                 <Link to={"addSmtpAccount"}>Add smtp acc</Link>
                 <br></br>
                 <Link to={"addImapAccount"}>Add imap acc</Link>
+                <br></br>
+                <Link to={"showAllMails"}>Show all mails</Link>
             </div>
 
         )

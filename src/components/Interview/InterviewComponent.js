@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap'
 import interviewService from "../../services/interview.service";
 import { PencilSquare } from 'react-bootstrap-icons';
 import { Trash } from 'react-bootstrap-icons'
-import EditInterviewComponent from './EditInterview/EditInterviewComponent';
+import EditInterviewComponent from './EditInterviewComponent';
 
 class InterviewComponent extends React.Component {
     constructor(props) {
@@ -11,9 +11,11 @@ class InterviewComponent extends React.Component {
 
         this.state = {
             interviews: [],
-            editedId: -1
+            editedId: -1,
+            editClicked: false
         }
         this.handleDeleteInterview = this.handleDeleteInterview.bind(this)
+        this.setEditClicked = this.setEditClicked.bind(this);
     }
     setEditedId(event, id) {
         this.setState({
@@ -39,7 +41,13 @@ class InterviewComponent extends React.Component {
             })
         })
     }
+    setEditClicked(e) {
+        e.stopPropagation();
 
+        this.setState({
+            editClicked: true
+        });
+    }
 
     render() {
         return (
@@ -89,7 +97,8 @@ class InterviewComponent extends React.Component {
                                         {u.candidateStatus}
                                     </td>
                                     <td>
-                                        {u.date}
+                                        <EditInterviewComponent editClicked={this.state.editClicked} name='name' type='text' value={u.date} handleInputChange={this.handleInputChange}></EditInterviewComponent>
+
                                     </td>
                                     <td>
                                         {u.type}
@@ -101,9 +110,9 @@ class InterviewComponent extends React.Component {
                                         {u.workerId}
                                     </td>
                                     <td>
-                                        <Button variant="success" onClick={(event) => this.setEditedId(event, u.interviewId)}>
+                                        <button className='btn btn-success' onClick={this.setEditClicked}>
                                             <PencilSquare></PencilSquare>
-                                        </Button>
+                                        </button>
                                         <Button variant='danger' onClick={(event) => this.handleDeleteInterview(event, u.interviewId)}>
                                             <Trash></Trash>
                                         </Button>
