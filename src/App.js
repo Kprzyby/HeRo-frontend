@@ -20,6 +20,8 @@ import AddImapAccount from "./components/Admin/AddImapAccountComponent/AddImapAc
 import UserComponent from "./components/User/UserComponent";
 import ShowCandidatesComponent from "./components/Candidate/ShowCandidatesComponent/ShowCandidatesComponent";
 import InterviewComponent from "./components/Interview/InterviewComponent";
+import ShowMailsComponent from "./components/Admin/ShowMailsComponent";
+
 
 
 const App = () => {
@@ -129,6 +131,7 @@ const App = () => {
           <Route exact path={"/admin/addImapAccount"} element={<AddImapAccount />} />
           <Route exact path={"/user"} element={<UserComponent />} />
           <Route exact path={"/interview"} element={<InterviewComponent />} />
+          <Route exact path={"/admin/showAllMails"} element={<ShowMailsComponent />} />
 
         </Routes>
       </Container>

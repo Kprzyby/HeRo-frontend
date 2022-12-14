@@ -42,10 +42,16 @@ function getAllPossibleSmtpAccountNames() {
 
 }
 
+function getAllMails() {
+    return api.post('GetAllMails').then(res => res.data)
+
+}
+
 const emailService = {
     addSmtpAccount,
     addImapAccount,
-    getAllPossibleSmtpAccountNames
+    getAllPossibleSmtpAccountNames,
+    getAllMails
 }
 
 export default emailService
