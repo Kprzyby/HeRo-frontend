@@ -94,6 +94,8 @@ class CandidateDetailsComponent extends React.Component {
         this.fetchData(candidate.id)
         this.setState({
             candidateData: candidate,
+            status: candidate.status,
+            stage: candidate.stage
         })
     }
     fetchCV(e) {

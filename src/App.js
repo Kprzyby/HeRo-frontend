@@ -86,6 +86,11 @@ const App = () => {
                 User
               </Link>
             </li>
+            <li className="nav-item">
+            <Link to={"/interview"} className="nav-link">
+              Interview
+            </Link>
+          </li>
           </div>
         ) : (
           <div className="navbar-nav ml-auto">
@@ -102,11 +107,6 @@ const App = () => {
           <li className="nav-item">
             <Link to={"/recruitments"} className="nav-link">
               Recruitments
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to={"/interview"} className="nav-link">
-              Interview
             </Link>
           </li>
         </div>
